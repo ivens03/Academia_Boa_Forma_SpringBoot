@@ -1,0 +1,40 @@
+package academia.boaForma.model.aluno;
+
+import academia.boaForma.model.Endereco;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.Date;
+
+@Entity
+@Table(name = "alunos")
+public class AlunosModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    //COLUNAS DAS TABELAS
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idAluno")
+    private Integer idAluno;
+
+    @Column(name = "nomeAluno")
+    private String nomeAluno;
+
+    @Column(name = "idadeAluno")
+    private Byte idadeAluno;
+
+    @Column(name = "senhaAluno")
+    private String senhaAluno;
+
+    @Column(name = "diaPagamento")
+    private Date diaPagamento;
+
+    @Column(name = "diaPago")
+    private Date diaPago;
+
+    @Embedded
+    private Endereco endereco;
+
+}
