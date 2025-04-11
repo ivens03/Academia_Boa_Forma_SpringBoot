@@ -1,0 +1,6 @@
+package academia.boaForma.dtos.alunos;
+
+public record PagamentosAlunosDto(
+
+) {
+}

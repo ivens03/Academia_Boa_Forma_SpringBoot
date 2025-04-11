@@ -1,6 +1,6 @@
 package academia.boaForma.model.aluno;
 
-import academia.boaForma.model.Endereco;
+import academia.boaForma.model.compartilhados.Endereco;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -36,5 +36,8 @@ public class AlunosModel implements Serializable {
 
     @Embedded
     private Endereco endereco;
+
+    @Embedded
+    private MarcoAluno  marcoAluno;
 
 }

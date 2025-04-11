@@ -1,6 +1,6 @@
-package academia.boaForma.model.aluno;
+package academia.boaForma.models.alunos.informacoes;
 
-public enum ObjeivoAluno {
+public enum ObjeivoAlunoEnum {
     HIPERTROFIA,            // Ganho de massa muscular
     PERCA_DE_PESO,          // Redução do percentual de gordura
     RESISTENCIA,            // Aumento da resistência muscular e/ou cardiovascular
