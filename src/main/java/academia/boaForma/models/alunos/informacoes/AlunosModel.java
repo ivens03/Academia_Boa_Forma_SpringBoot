@@ -1,6 +1,6 @@
-package academia.boaForma.models.compartilhados;
+package academia.boaForma.models.alunos.informacoes;
 
-//import academia.boaForma.models.compartilhados.EnderecoModel;
+import academia.boaForma.models.compartilhados.EnderecoModel;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -40,12 +40,10 @@ public class AlunosModel implements Serializable {
     private String descricaoDoenca;
 
     @Embedded
-    private Endereco endereco;
+    private EnderecoModel enderecoModel;
 
     //CONSTRUTOR
     public AlunosModel() {}
-
-
 
 //GETTERS E SETTERS
 
@@ -81,12 +79,12 @@ public class AlunosModel implements Serializable {
         this.senhaAluno = senhaAluno;
     }
 
-    public Endereco getEndereco() {
-        return endereco;
+    public EnderecoModel getEndereco() {
+        return enderecoModel;
     }
 
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
+    public void setEndereco(EnderecoModel endereco) {
+        this.enderecoModel = endereco;
     }
 
     public String getNumeroCelularAluno() {
