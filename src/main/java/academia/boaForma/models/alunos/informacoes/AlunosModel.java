@@ -1,6 +1,6 @@
-package academia.boaForma.models.alunos.informacoes;
+package academia.boaForma.models.compartilhados;
 
-import academia.boaForma.models.compartilhados.Endereco;
+//import academia.boaForma.models.compartilhados.EnderecoModel;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -45,17 +45,7 @@ public class AlunosModel implements Serializable {
     //CONSTRUTOR
     public AlunosModel() {}
 
-    public AlunosModel(Integer idAluno, String nomeAluno, Byte idadeAluno, String senhaAluno, String numeroCelularAluno, String numeroEnergencia, Boolean doenca, String descricaoDoenca, Endereco endereco) {
-        this.idAluno = idAluno;
-        this.nomeAluno = nomeAluno;
-        this.idadeAluno = idadeAluno;
-        this.senhaAluno = senhaAluno;
-        this.numeroCelularAluno = numeroCelularAluno;
-        this.numeroEnergencia = numeroEnergencia;
-        this.doenca = doenca;
-        this.descricaoDoenca = descricaoDoenca;
-        this.endereco = endereco;
-    }
+
 
 //GETTERS E SETTERS
 
