@@ -27,21 +27,37 @@ public class AlunosModel implements Serializable {
     @Column(name = "senhaAluno")
     private String senhaAluno;
 
+    @Column(name = "numeroCelularAluno")
+    private String numeroCelularAluno;
+
+    @Column(name = "numeroEnergencia")
+    private String numeroEnergencia;
+
+    @Column(name = "doenca")
+    private Boolean doenca;
+
+    @Column(name = "descricaoDoenca")
+    private String descricaoDoenca;
+
     @Embedded
     private Endereco endereco;
 
     //CONSTRUTOR
     public AlunosModel() {}
 
-    public AlunosModel(Integer idAluno, String nomeAluno, Byte idadeAluno, String senhaAluno, Endereco endereco) {
+    public AlunosModel(Integer idAluno, String nomeAluno, Byte idadeAluno, String senhaAluno, String numeroCelularAluno, String numeroEnergencia, Boolean doenca, String descricaoDoenca, Endereco endereco) {
         this.idAluno = idAluno;
         this.nomeAluno = nomeAluno;
         this.idadeAluno = idadeAluno;
         this.senhaAluno = senhaAluno;
+        this.numeroCelularAluno = numeroCelularAluno;
+        this.numeroEnergencia = numeroEnergencia;
+        this.doenca = doenca;
+        this.descricaoDoenca = descricaoDoenca;
         this.endereco = endereco;
     }
 
-    //GETTERS E SETTERS
+//GETTERS E SETTERS
 
     public Integer getIdAluno() {
         return idAluno;
@@ -81,5 +97,37 @@ public class AlunosModel implements Serializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getNumeroCelularAluno() {
+        return numeroCelularAluno;
+    }
+
+    public void setNumeroCelularAluno(String numeroCelularAluno) {
+        this.numeroCelularAluno = numeroCelularAluno;
+    }
+
+    public String getNumeroEnergencia() {
+        return numeroEnergencia;
+    }
+
+    public void setNumeroEnergencia(String numeroEnergencia) {
+        this.numeroEnergencia = numeroEnergencia;
+    }
+
+    public Boolean getDoenca() {
+        return doenca;
+    }
+
+    public void setDoenca(Boolean doenca) {
+        this.doenca = doenca;
+    }
+
+    public String getDescricaoDoenca() {
+        return descricaoDoenca;
+    }
+
+    public void setDescricaoDoenca(String descricaoDoenca) {
+        this.descricaoDoenca = descricaoDoenca;
     }
 }
