@@ -1,4 +1,4 @@
-package academia.boaForma.model;
+package academia.boaForma.models.compartilhados;
 
 public class Endereco {
 
