@@ -1,5 +1,8 @@
 package academia.boaForma.models.compartilhados;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class EnderecoModel {
 
     private String bairro;
@@ -8,6 +11,8 @@ public class EnderecoModel {
     private String complemento;
 
     //CONSTRUTOR
+
+    public EnderecoModel() {}
 
     public EnderecoModel(String bairro, String cep, String numero, String complemento) {
         this.bairro = bairro;

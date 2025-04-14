@@ -2,12 +2,13 @@ package academia.boaForma.models.alunos.informacoes;
 
 import academia.boaForma.models.compartilhados.EnderecoModel;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "alunos")
-public class AlunosModel implements Serializable {
+public class AlunosModel extends RepresentationModel<AlunosModel> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +46,19 @@ public class AlunosModel implements Serializable {
     //CONSTRUTOR
     public AlunosModel() {}
 
-//GETTERS E SETTERS
+    public AlunosModel(Integer idAluno, String nomeAluno, Byte idadeAluno, String senhaAluno, String numeroCelularAluno, String numeroEnergencia, Boolean doenca, String descricaoDoenca, EnderecoModel enderecoModel) {
+        this.idAluno = idAluno;
+        this.nomeAluno = nomeAluno;
+        this.idadeAluno = idadeAluno;
+        this.senhaAluno = senhaAluno;
+        this.numeroCelularAluno = numeroCelularAluno;
+        this.numeroEnergencia = numeroEnergencia;
+        this.doenca = doenca;
+        this.descricaoDoenca = descricaoDoenca;
+        this.enderecoModel = enderecoModel;
+    }
+
+    //GETTERS E SETTERS
 
     public Integer getIdAluno() {
         return idAluno;
