@@ -2,13 +2,14 @@ package academia.boaForma.models.alunos.pagamentos;
 
 import academia.boaForma.models.alunos.informacoes.AlunosModel;
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "pagamentosAlunos")
-public class PagamentosAlunosModel implements Serializable {
+public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosModel> implements Serializable {
 
     //COLUNAS DAS TABELAS
 
