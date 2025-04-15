@@ -12,4 +12,11 @@ public record AlunosDto(
         Boolean doenca,
         String descricaoDoenca,
         EnderecoModel endereco) {
+
+    public AlunosDto {
+        if (doenca != null && !doenca) {
+            descricaoDoenca = "Não possui problemas medicos";
+        }
+    }
+
 }
