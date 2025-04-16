@@ -1,10 +1,12 @@
 package academia.boaForma.models.alunos.informacoes;
 
+import academia.boaForma.models.alunos.pagamentos.PagamentosAlunosModel;
 import academia.boaForma.models.compartilhados.EnderecoModel;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "alunos")
@@ -21,6 +23,12 @@ public class AlunosModel extends RepresentationModel<AlunosModel> implements Ser
 
     @Column(name = "nome_aluno")
     private String nome_aluno;
+    // REVER NOS DTOs E FAZER OS DEVIDOS TESTES
+    @OneToMany(mappedBy = "id_aluno", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PagamentosAlunosModel> pagamentosAlunos;
+    /****************************************************************************************/
+    @OneToMany(mappedBy = "nome_aluno", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PagamentosAlunosModel> nomeAlunosPagamentos;
 
     @Column(name = "idade_aluno")
     private Byte idade_aluno;

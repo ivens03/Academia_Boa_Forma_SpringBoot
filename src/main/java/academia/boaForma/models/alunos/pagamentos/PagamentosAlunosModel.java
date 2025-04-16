@@ -1,11 +1,13 @@
 package academia.boaForma.models.alunos.pagamentos;
 
+import academia.boaForma.models.alunos.informacoes.AlunosModel;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "pagamentos_alunos")
@@ -28,7 +30,15 @@ public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosM
 
     @Column(name = "valor_pago")
     private BigDecimal valor_pago;
+    // REVER NOS DTOs E FAZER OS DEVIDOS TESTES
+    @ManyToOne
+    @JoinColumn(name = "id_aluno")
+    private AlunosModel id_aluno;
 
+    @ManyToOne
+    @JoinColumn(name = "nome_aluno")
+    private AlunosModel nome_aluno;
+    /****************************************************************************************/
     //CONSTRUTOR
 
     public PagamentosAlunosModel() {}
