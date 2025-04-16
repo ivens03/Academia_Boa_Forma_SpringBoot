@@ -1,87 +1,85 @@
 package academia.boaForma.models.alunos.pagamentos;
 
-import academia.boaForma.models.alunos.informacoes.AlunosModel;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "pagamentosAlunos")
+@Table(name = "pagamentos_alunos")
 public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosModel> implements Serializable {
 
     //COLUNAS DAS TABELAS
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idPagamento;
+    private Integer id_Pagamento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idAluno", referencedColumnName = "idAluno")
-    private AlunosModel idAluno;
+    @Column(name = "dia_pagamento")
+    private Date dia_pagamento;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nomeAluno", referencedColumnName = "nomeAluno")
-    private AlunosModel nomeAluno;
+    @Column(name = "dia_pago")
+    private Date dia_pago;
 
-    @Column(name = "diaPagamento")
-    private Date diaPagamento;
+    @Embedded
+    private TipoPagamentoEnum tipoPagamento;
 
-    @Column(name = "diaPago")
-    private Date diaPago;
+    @Column(name = "valor_pago")
+    private BigDecimal valor_pago;
 
     //CONSTRUTOR
 
     public PagamentosAlunosModel() {}
 
-    public PagamentosAlunosModel(Integer idPagamento, AlunosModel idAluno, AlunosModel nomeAluno, Date diaPagamento, Date diaPago) {
-        this.idPagamento = idPagamento;
-        this.idAluno = idAluno;
-        this.nomeAluno = nomeAluno;
-        this.diaPagamento = diaPagamento;
-        this.diaPago = diaPago;
+    public PagamentosAlunosModel(Integer id_Pagamento, Date dia_pagamento, Date dia_pago, TipoPagamentoEnum tipoPagamento, BigDecimal valor_pago) {
+        this.id_Pagamento = id_Pagamento;
+        this.dia_pagamento = dia_pagamento;
+        this.dia_pago = dia_pago;
+        this.tipoPagamento = tipoPagamento;
+        this.valor_pago = valor_pago;
     }
 
 //GETTERS E SETTERS
 
     public Integer getIdPagamento() {
-        return idPagamento;
+        return id_Pagamento;
     }
 
     public void setIdPagamento(Integer idPagamento) {
-        this.idPagamento = idPagamento;
+        this.id_Pagamento = idPagamento;
     }
 
-    public AlunosModel getIdAluno() {
-        return idAluno;
+    public Date getDia_pagamento() {
+        return dia_pagamento;
     }
 
-    public void setIdAluno(AlunosModel idAluno) {
-        this.idAluno = idAluno;
+    public void setDia_pagamento(Date dia_pagamento) {
+        this.dia_pagamento = dia_pagamento;
     }
 
-    public AlunosModel getNomeAluno() {
-        return nomeAluno;
+    public Date getDia_pago() {
+        return dia_pago;
     }
 
-    public void setNomeAluno(AlunosModel nomeAluno) {
-        this.nomeAluno = nomeAluno;
+    public void setDia_pago(Date dia_pago) {
+        this.dia_pago = dia_pago;
     }
 
-    public Date getDiaPagamento() {
-        return diaPagamento;
+    public TipoPagamentoEnum getTipoPagamento() {
+        return tipoPagamento;
     }
 
-    public void setDiaPagamento(Date diaPagamento) {
-        this.diaPagamento = diaPagamento;
+    public void setTipoPagamento(TipoPagamentoEnum tipoPagamento) {
+        this.tipoPagamento = tipoPagamento;
     }
 
-    public Date getDiaPago() {
-        return diaPago;
+    public BigDecimal getValor_pago() {
+        return valor_pago;
     }
 
-    public void setDiaPago(Date diaPago) {
-        this.diaPago = diaPago;
+    public void setValor_pago(BigDecimal valor_pago) {
+        this.valor_pago = valor_pago;
     }
 }

@@ -2,20 +2,21 @@ package academia.boaForma.dtos.alunos;
 
 import academia.boaForma.models.compartilhados.EnderecoModel;
 
-// Não foi colocado o idAluno pois ele foi criado automaticamente e a senha ainda pois não tem segurançã ainda.
 public record AlunosDto(
-        String nomeAluno,
-        Byte idadeAluno,
-        String senhaAluno,
-        String numeroCelularAluno,
-        String numeroEnergencia,
+        Integer id_aluno,
+        String nome_aluno,
+        Byte idade_aluno,
+        String senha_aluno,
+        String numero_celular_aluno,
+        String numero_energencia,
         Boolean doenca,
-        String descricaoDoenca,
-        EnderecoModel endereco) {
+        String descricao_doenca,
+        EnderecoModel endereco
+) {
 
     public AlunosDto {
         if (doenca != null && !doenca) {
-            descricaoDoenca = "Não possui problemas medicos";
+            descricao_doenca = "Não possui problemas medicos";
         }
     }
 

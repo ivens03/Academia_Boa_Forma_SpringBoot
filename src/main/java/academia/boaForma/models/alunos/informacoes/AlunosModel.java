@@ -16,104 +16,104 @@ public class AlunosModel extends RepresentationModel<AlunosModel> implements Ser
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idAluno")
-    private Integer idAluno;
+    @Column(name = "id_aluno")
+    private Integer id_aluno;
 
-    @Column(name = "nomeAluno")
-    private String nomeAluno;
+    @Column(name = "nome_aluno")
+    private String nome_aluno;
 
-    @Column(name = "idadeAluno")
-    private Byte idadeAluno;
+    @Column(name = "idade_aluno")
+    private Byte idade_aluno;
 
-    @Column(name = "senhaAluno")
-    private String senhaAluno;
+    @Column(name = "senha_aluno")
+    private String senha_aluno;
 
-    @Column(name = "numeroCelularAluno")
-    private String numeroCelularAluno;
+    @Column(name = "numero_celular_aluno")
+    private String numero_celular_aluno;
 
-    @Column(name = "numeroEnergencia")
-    private String numeroEnergencia;
+    @Column(name = "numero_energencia")
+    private String numero_energencia;
 
     @Column(name = "doenca")
     private Boolean doenca;
 
-    @Column(name = "descricaoDoenca")
-    private String descricaoDoenca;
+    @Column(name = "descricao_doenca")
+    private String descricao_doenca;
 
     @Embedded
-    private EnderecoModel enderecoModel;
+    private EnderecoModel endereco;
 
     //CONSTRUTOR
     public AlunosModel() {}
 
-    public AlunosModel(Integer idAluno, String nomeAluno, Byte idadeAluno, String senhaAluno, String numeroCelularAluno, String numeroEnergencia, Boolean doenca, String descricaoDoenca, EnderecoModel enderecoModel) {
-        this.idAluno = idAluno;
-        this.nomeAluno = nomeAluno;
-        this.idadeAluno = idadeAluno;
-        this.senhaAluno = senhaAluno;
-        this.numeroCelularAluno = numeroCelularAluno;
-        this.numeroEnergencia = numeroEnergencia;
+    public AlunosModel(Integer id_aluno, String nome_aluno, Byte idade_aluno, String senha_aluno, String numero_celular_aluno, String numero_energencia, Boolean doenca, String descricao_doenca, EnderecoModel endereco) {
+        this.id_aluno = id_aluno;
+        this.nome_aluno = nome_aluno;
+        this.idade_aluno = idade_aluno;
+        this.senha_aluno = senha_aluno;
+        this.numero_celular_aluno = numero_celular_aluno;
+        this.numero_energencia = numero_energencia;
         this.doenca = doenca;
-        this.descricaoDoenca = descricaoDoenca;
-        this.enderecoModel = enderecoModel;
+        this.descricao_doenca = descricao_doenca;
+        this.endereco = endereco;
     }
 
     //GETTERS E SETTERS
 
     public Integer getIdAluno() {
-        return idAluno;
+        return id_aluno;
     }
 
-    public void setIdAluno(Integer idAluno) {
-        this.idAluno = idAluno;
+    public void setIdAluno(Integer id_aluno) {
+        this.id_aluno = id_aluno;
     }
 
     public String getNomeAluno() {
-        return nomeAluno;
+        return nome_aluno;
     }
 
-    public void setNomeAluno(String nomeAluno) {
-        this.nomeAluno = nomeAluno;
+    public void setNomeAluno(String nome_aluno) {
+        this.nome_aluno = nome_aluno;
     }
 
     public Byte getIdadeAluno() {
-        return idadeAluno;
+        return idade_aluno;
     }
 
-    public void setIdadeAluno(Byte idadeAluno) {
-        this.idadeAluno = idadeAluno;
+    public void setIdadeAluno(Byte idade_aluno) {
+        this.idade_aluno = idade_aluno;
     }
 
     public String getSenhaAluno() {
-        return senhaAluno;
+        return senha_aluno;
     }
 
-    public void setSenhaAluno(String senhaAluno) {
-        this.senhaAluno = senhaAluno;
+    public void setSenhaAluno(String senha_aluno) {
+        this.senha_aluno = senha_aluno;
     }
 
     public EnderecoModel getEndereco() {
-        return enderecoModel;
+        return endereco;
     }
 
     public void setEndereco(EnderecoModel endereco) {
-        this.enderecoModel = endereco;
+        this.endereco = endereco;
     }
 
     public String getNumeroCelularAluno() {
-        return numeroCelularAluno;
+        return numero_celular_aluno;
     }
 
-    public void setNumeroCelularAluno(String numeroCelularAluno) {
-        this.numeroCelularAluno = numeroCelularAluno;
+    public void setNumeroCelularAluno(String numero_celular_aluno) {
+        this.numero_celular_aluno = numero_celular_aluno;
     }
 
     public String getNumeroEnergencia() {
-        return numeroEnergencia;
+        return numero_energencia;
     }
 
-    public void setNumeroEnergencia(String numeroEnergencia) {
-        this.numeroEnergencia = numeroEnergencia;
+    public void setNumeroEnergencia(String numero_energencia) {
+        this.numero_energencia = numero_energencia;
     }
 
     public Boolean getDoenca() {
@@ -125,10 +125,10 @@ public class AlunosModel extends RepresentationModel<AlunosModel> implements Ser
     }
 
     public String getDescricaoDoenca() {
-        return descricaoDoenca;
+        return descricao_doenca;
     }
 
-    public void setDescricaoDoenca(String descricaoDoenca) {
-        this.descricaoDoenca = descricaoDoenca;
+    public void setDescricaoDoenca(String descricao_doenca) {
+        this.descricao_doenca = descricao_doenca;
     }
 }

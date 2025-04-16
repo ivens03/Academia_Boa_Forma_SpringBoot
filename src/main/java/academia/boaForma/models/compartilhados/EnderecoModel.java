@@ -7,7 +7,7 @@ public class EnderecoModel {
 
     private String bairro;
     private String cep;
-    private String numero;
+    private String numero_residencia;
     private String complemento;
 
     //CONSTRUTOR
@@ -17,7 +17,7 @@ public class EnderecoModel {
     public EnderecoModel(String bairro, String cep, String numero, String complemento) {
         this.bairro = bairro;
         this.cep = cep;
-        this.numero = numero;
+        this.numero_residencia = numero_residencia;
         this.complemento = complemento;
     }
 
@@ -40,11 +40,11 @@ public class EnderecoModel {
     }
 
     public String getNumero() {
-        return numero;
+        return numero_residencia;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setNumero(String numero_residencia) {
+        this.numero_residencia = numero_residencia;
     }
 
     public String getComplemento() {
