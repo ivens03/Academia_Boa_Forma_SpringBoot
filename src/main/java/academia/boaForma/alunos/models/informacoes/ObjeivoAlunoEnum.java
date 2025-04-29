@@ -1,4 +1,4 @@
-package academia.boaForma.models.alunos.informacoes;
+package academia.boaForma.alunos.models.informacoes;
 
 public enum ObjeivoAlunoEnum {
     HIPERTROFIA,                        // Ganho de massa muscular

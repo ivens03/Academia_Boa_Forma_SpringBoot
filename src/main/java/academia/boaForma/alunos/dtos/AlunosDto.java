@@ -1,6 +1,7 @@
-package academia.boaForma.dtos.alunos;
+package academia.boaForma.alunos.dtos;
 
-import academia.boaForma.models.compartilhados.EnderecoModel;
+
+import academia.boaForma.alunos.models.endereco.EnderecoModel;
 
 public record AlunosDto(
         Integer id_aluno,

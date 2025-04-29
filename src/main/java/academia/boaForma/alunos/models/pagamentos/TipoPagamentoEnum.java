@@ -1,4 +1,4 @@
-package academia.boaForma.models.alunos.pagamentos;
+package academia.boaForma.alunos.models.pagamentos;
 
 public enum TipoPagamentoEnum {
     PIX,

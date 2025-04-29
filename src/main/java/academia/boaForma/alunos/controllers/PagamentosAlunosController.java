@@ -1,8 +1,9 @@
-package academia.boaForma.controllers.alunos;
+/*
+package academia.boaForma.alunos.controllers;
 
-import academia.boaForma.dtos.alunos.PagamentosAlunosDto;
-import academia.boaForma.models.alunos.pagamentos.PagamentosAlunosModel;
-import academia.boaForma.repositories.alunos.PagamentosAlunosRepositorie;
+import academia.boaForma.alunos.dtos.PagamentosAlunosDto;
+import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
+import academia.boaForma.alunos.repositories.PagamentosAlunosRepositorie;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,3 +73,4 @@ public class PagamentosAlunosController {
         return ResponseEntity.status(HttpStatus.OK).body("Pagamento deletado com sucesso");
     }
 }
+*/

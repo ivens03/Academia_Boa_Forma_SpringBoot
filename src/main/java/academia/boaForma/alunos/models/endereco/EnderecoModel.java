@@ -1,4 +1,4 @@
-package academia.boaForma.models.compartilhados;
+package academia.boaForma.alunos.models.endereco;
 
 import jakarta.persistence.Embeddable;
 
@@ -53,5 +53,13 @@ public class EnderecoModel {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+
+    public String getNumero_residencia() {
+        return numero_residencia;
+    }
+
+    public void setNumero_residencia(String numero_residencia) {
+        this.numero_residencia = numero_residencia;
     }
 }

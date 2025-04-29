@@ -1,4 +1,4 @@
-package academia.boaForma.models.alunos.marcos;
+package academia.boaForma.alunos.models.marcos;
 
 public record MarcoAlunoRecord(
         String circunferenciaBracos,

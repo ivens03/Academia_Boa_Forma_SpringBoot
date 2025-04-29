@@ -1,6 +1,6 @@
-package academia.boaForma.dtos.alunos;
+package academia.boaForma.alunos.dtos;
 
-import academia.boaForma.models.alunos.pagamentos.TipoPagamentoEnum;
+import academia.boaForma.alunos.models.pagamentos.TipoPagamentoEnum;
 
 import java.math.BigDecimal;
 import java.util.Date;

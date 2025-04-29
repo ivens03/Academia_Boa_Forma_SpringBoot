@@ -1,0 +1,52 @@
+package academia.boaForma.alunos.models.pagamentos;
+
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+
+@Entity
+@Table(name = "pagamentos_alunos")
+public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosModel> implements Serializable {
+
+    //COLUNAS DAS TABELAS
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id_Pagamento;
+
+    @Column(nullable = false)
+    private Date dia_para_pagar;
+
+    @Column(nullable = false)
+    private Date dia_pagamento;
+
+    @Embedded
+    private TipoPagamentoEnum tipoPagamento;
+
+    @Column(name = "valor_pago")
+    private BigDecimal valor_pago;
+
+    // REVER NOS DTOs E FAZER OS DEVIDOS TESTES
+    @ManyToOne
+    @JoinColumn(name = "id_aluno")
+    private AlunosModel id_aluno;
+
+    @ManyToOne
+    @JoinColumn(name = "nome_aluno")
+    private AlunosModel nome_aluno;
+
+    //CONSTRUTOR
+
+    public PagamentosAlunosModel() {}
+}
+
+
+
+//GETTERS E SETTERS
+
+

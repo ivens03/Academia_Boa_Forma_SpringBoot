@@ -1,8 +1,8 @@
-package academia.boaForma.controllers.alunos;
+package academia.boaForma.alunos.controllers;
 
-import academia.boaForma.dtos.alunos.AlunosDto;
-import academia.boaForma.models.alunos.informacoes.AlunosModel;
-import academia.boaForma.repositories.alunos.AlunosRepositorie;
+import academia.boaForma.alunos.dtos.AlunosDto;
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

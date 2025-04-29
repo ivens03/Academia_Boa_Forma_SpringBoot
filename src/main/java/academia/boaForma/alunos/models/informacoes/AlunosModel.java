@@ -1,7 +1,7 @@
-package academia.boaForma.models.alunos.informacoes;
+package academia.boaForma.alunos.models.informacoes;
 
-import academia.boaForma.models.alunos.pagamentos.PagamentosAlunosModel;
-import academia.boaForma.models.compartilhados.EnderecoModel;
+import academia.boaForma.alunos.models.endereco.EnderecoModel;
+import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 

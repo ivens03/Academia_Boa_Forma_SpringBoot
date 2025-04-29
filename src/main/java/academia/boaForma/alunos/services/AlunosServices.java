@@ -1,8 +1,8 @@
-package academia.boaForma.services.alunos;
+package academia.boaForma.alunos.services;
 
-import academia.boaForma.dtos.alunos.AlunosDto;
-import academia.boaForma.models.alunos.informacoes.AlunosModel;
-import academia.boaForma.repositories.alunos.AlunosRepositorie;
+import academia.boaForma.alunos.dtos.AlunosDto;
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
