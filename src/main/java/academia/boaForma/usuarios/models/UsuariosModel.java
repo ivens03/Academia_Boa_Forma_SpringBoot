@@ -1,8 +1,10 @@
 package academia.boaForma.usuarios.models;
 
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
@@ -12,9 +14,9 @@ public class UsuariosModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer id_usuario;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private LocalDate criado_em;
 
     @Column(nullable = false)
@@ -23,6 +25,14 @@ public class UsuariosModel implements Serializable {
     @Column(nullable = false)
     private Boolean acesso_sistema;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
     private TipoUsuarioEnum tipoUsuario;
+
+    // Para conexão com a tabela alunos
+
+    @OneToMany(mappedBy = "id_usuario", cascade = CascadeType.ALL)
+    private List<AlunosModel> usuario_id;
+
+    @OneToMany(mappedBy = "acesso_sistema", cascade = CascadeType.ALL)
+    private List<AlunosModel> prmissao_sistema;
 }

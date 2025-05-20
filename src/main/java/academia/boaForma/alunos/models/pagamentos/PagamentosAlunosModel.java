@@ -25,20 +25,23 @@ public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosM
     @Column(nullable = false)
     private Date dia_pagamento;
 
+    @Column(nullable = false)
+    private Date validade_pagamento;
+
     @Embedded
     private TipoPagamentoEnum tipoPagamento;
 
-    @Column(name = "valor_pago")
+    @Column(nullable = false)
     private BigDecimal valor_pago;
 
-    // REVER NOS DTOs E FAZER OS DEVIDOS TESTES
+    @Column(nullable = false)
+    private LocalDate registro_pagamento;
+
+    // Relacionamento com alunos
+
     @ManyToOne
     @JoinColumn(name = "id_aluno")
     private AlunosModel id_aluno;
-
-    @ManyToOne
-    @JoinColumn(name = "nome_aluno")
-    private AlunosModel nome_aluno;
 
     //CONSTRUTOR
 

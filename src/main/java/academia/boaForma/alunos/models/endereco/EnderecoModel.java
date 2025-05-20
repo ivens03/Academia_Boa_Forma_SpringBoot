@@ -1,5 +1,6 @@
 package academia.boaForma.alunos.models.endereco;
 
+import academia.boaForma.alunos.dtos.DadosEnderecoDTO;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
@@ -14,11 +15,11 @@ public class EnderecoModel {
 
     public EnderecoModel() {}
 
-    public EnderecoModel(String bairro, String cep, String numero, String complemento) {
-        this.bairro = bairro;
-        this.cep = cep;
-        this.numero_residencia = numero_residencia;
-        this.complemento = complemento;
+    public EnderecoModel(DadosEnderecoDTO endereco) {
+        this.bairro = endereco.bairro();
+        this.cep = endereco.cep();
+        this.numero_residencia = endereco.numero_residencia();
+        this.complemento = endereco.complemento();
     }
 
     //GETTERS E SETTERS
@@ -39,11 +40,11 @@ public class EnderecoModel {
         this.cep = cep;
     }
 
-    public String getNumero() {
+    public String getNumero_residencia() {
         return numero_residencia;
     }
 
-    public void setNumero(String numero_residencia) {
+    public void setNumero_residencia(String numero_residencia) {
         this.numero_residencia = numero_residencia;
     }
 
@@ -53,13 +54,5 @@ public class EnderecoModel {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
-    }
-
-    public String getNumero_residencia() {
-        return numero_residencia;
-    }
-
-    public void setNumero_residencia(String numero_residencia) {
-        this.numero_residencia = numero_residencia;
     }
 }
