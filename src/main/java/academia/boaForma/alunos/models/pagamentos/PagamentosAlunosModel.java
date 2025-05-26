@@ -1,6 +1,6 @@
 package academia.boaForma.alunos.models.pagamentos;
 
-import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.alunos.models.informacoes.Alunos;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "pagamentos_alunos")
-public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosModel> implements Serializable {
+public class PagamentosAlunosModel implements Serializable {
 
     //COLUNAS DAS TABELAS
 
@@ -41,7 +41,7 @@ public class PagamentosAlunosModel extends RepresentationModel<PagamentosAlunosM
 
     @ManyToOne
     @JoinColumn(name = "id_aluno")
-    private AlunosModel id_aluno;
+    private Alunos id_aluno;
 
     //CONSTRUTOR
 

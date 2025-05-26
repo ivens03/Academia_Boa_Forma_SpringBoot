@@ -1,12 +1,11 @@
 package academia.boaForma.alunos.services;
 
-import academia.boaForma.alunos.dtos.DadosCadastroAlunoDTO;
-import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.alunos.dtos.DadosCadastroAluno;
+import academia.boaForma.alunos.models.informacoes.Alunos;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import jakarta.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,32 +13,35 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class AlunoService {
 
-    @Autowired
-    AlunosRepositorie alunosRepositorie;
+    private final AlunosRepositorie alunosRepositorie;
+
+    public AlunoService(AlunosRepositorie alunosRepositorie) {
+        this.alunosRepositorie = alunosRepositorie;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(AlunoService.class);
 
-    public boolean existeAlunoComNome(String nome_aluno) {
-        return alunosRepositorie.existsByNome_aluno(nome_aluno);
+    public boolean existeAlunoComNome(String nome) {
+        return alunosRepositorie.existsByNome_aluno(nome);
     }
 
-    public void cadastrarAluno(DadosCadastroAlunoDTO dadosCadastroAlunoDTO) {
+    public void cadastrarAluno(DadosCadastroAluno dadosCadastroAluno) {
         try {
             // Validação de campos obrigatórios
-            if (dadosCadastroAlunoDTO.nome_aluno() == null || dadosCadastroAlunoDTO.nome_aluno().trim().isEmpty()) {
+            if (dadosCadastroAluno.nome() == null || dadosCadastroAluno.nome().trim().isEmpty()) {
                 throw new ValidationException("Nome do aluno é obrigatório");
             }
 
             // Validação de duplicidade
-            if (existeAlunoComNome(dadosCadastroAlunoDTO.nome_aluno())) {
+            if (existeAlunoComNome(dadosCadastroAluno.nome())) {
                 throw new ValidationException("Já existe um aluno com esse nome");
             }
 
             // Salvar aluno no banco de dados
-            AlunosModel novoAluno = new AlunosModel(dadosCadastroAlunoDTO);
+            Alunos novoAluno = new Alunos(dadosCadastroAluno);
             alunosRepositorie.save(novoAluno);
 
-            logger.info("Aluno cadastrado com sucesso: {}", dadosCadastroAlunoDTO.nome_aluno());
+            logger.info("Aluno cadastrado com sucesso: {}", dadosCadastroAluno.nome());
 
         } catch (ValidationException e) {
             logger.warn("Erro de validação ao cadastrar aluno: {}", e.getMessage());

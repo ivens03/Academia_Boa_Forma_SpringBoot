@@ -1,8 +1,6 @@
 package academia.boaForma.alunos.controllers;
 
-import academia.boaForma.alunos.dtos.DadosCadastroAlunoDTO;
-import academia.boaForma.alunos.models.informacoes.AlunosModel;
-import academia.boaForma.alunos.repositories.AlunosRepositorie;
+import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.services.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +15,13 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/alunos")
 public class AlunosController {
 
-/*    @Autowired
-    private AlunosRepositorie alunosRepositorie;*/
-
     @Autowired
     private AlunoService alunoService;
 
-
-/*    @PostMapping
-    public void cadastroAluno(@RequestBody DadosCadastroAlunoDTO dadosCadastroAlunoDTO) {
-        alunosRepositorie.save(new AlunosModel(dadosCadastroAlunoDTO));
-        System.out.println(dadosCadastroAlunoDTO);
-    }*/
-
     @PostMapping
-    public ResponseEntity<Object> cadastroAluno(@RequestBody DadosCadastroAlunoDTO dadosCadastroAlunoDTO) {
+    public ResponseEntity<Object> cadastroAluno(@RequestBody DadosCadastroAluno dadosCadastroAluno) {
         try {
-            alunoService.cadastrarAluno(dadosCadastroAlunoDTO);
+            alunoService.cadastrarAluno(dadosCadastroAluno);
             return ResponseEntity.status(HttpStatus.CREATED).body("Aluno cadastrado com sucesso");
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
