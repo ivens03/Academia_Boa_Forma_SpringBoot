@@ -3,6 +3,7 @@ package academia.boaForma.usuarios.models;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "usuarios")
@@ -16,13 +17,13 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     protected String nome;
 
-    @Column(length = 11)
+    @Column(length = 11, unique = true)
     protected String cpf;
 
-    @Column( unique = true)
+    @Column(unique = true)
     protected String email;
 
     @Column(nullable = false)
@@ -32,6 +33,13 @@ public class Usuario implements Serializable {
     protected String telefone;
 
     @Column(nullable = false)
+    protected Byte idade;
+
+    @Column
+    protected Date dataNascimento;
+
+    // Possivel erro
+    @Column //(nullable = false)
     protected LocalDate criadoEm;
 
     @Column(nullable = false)
@@ -40,19 +48,28 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     protected Boolean acessoSistema;
 
+    // Possivel erro
+
     public Usuario() {
-        this.criadoEm = LocalDate.now();
         this.ativo = true;
+        this.acessoSistema = true;
     }
 
-    public Usuario(String nome, String cpf, String email, String senha, String telefone, Boolean acessoSistema) {
+    //Registrar a data quando foi criado
+    @PrePersist
+    public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
+
+    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, Date dataNascimento, Boolean acessoSistema, Boolean ativo,LocalDate criadoEm) {
         this();
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
         this.telefone = telefone;
+        this.idade = idade;
+        this.dataNascimento = dataNascimento;
         this.acessoSistema = acessoSistema;
+        this.ativo = ativo;
     }
 
     // Getters e Setters
@@ -105,6 +122,22 @@ public class Usuario implements Serializable {
         this.telefone = telefone;
     }
 
+    public Byte getIdade() {
+        return idade;
+    }
+
+    public void setIdade(Byte idade) {
+        this.idade = idade;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public LocalDate getCriadoEm() {
         return criadoEm;
     }
@@ -149,4 +182,5 @@ public class Usuario implements Serializable {
     public void retirarAcessoSistema() {
         this.acessoSistema = false;
     }
+
 }

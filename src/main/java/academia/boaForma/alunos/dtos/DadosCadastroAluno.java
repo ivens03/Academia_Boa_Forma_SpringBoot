@@ -6,6 +6,7 @@ import academia.boaForma.professor.models.Professor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public record DadosCadastroAluno(
         Integer id,
@@ -18,6 +19,7 @@ public record DadosCadastroAluno(
         Boolean ativo,
         Boolean acessoSistema,
         Byte idade,
+        Date dataNascimento,
         String telefoneEmergencia,
         Boolean possuiDoenca,
         String descricaoDoenca,

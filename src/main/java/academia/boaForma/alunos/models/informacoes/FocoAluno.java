@@ -3,6 +3,7 @@ package academia.boaForma.alunos.models.informacoes;
 public enum FocoAluno {
     HIPRTOROFIA,
     PERCA_DE_PESO,
+    EMAGRECIMENTO,
     CONDICIONAMENTO_FISICO,
     RECUPERACAO,
     FORCA,

@@ -19,8 +19,9 @@ public class Professor extends Usuario {
     @Column(nullable = false)
     private Boolean professorMaster;
 
-    protected Professor() {
-        super();
+    public Professor() {}
+
+    public Professor(Boolean professorMaster) {
         this.professorMaster = false;
     }
 

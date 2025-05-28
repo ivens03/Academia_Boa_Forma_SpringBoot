@@ -15,9 +15,6 @@ public class Alunos extends Usuario {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
-    private Byte idade;
-
     @Column(length = 11)
     private String telefoneEmergencia;
 
@@ -40,6 +37,8 @@ public class Alunos extends Usuario {
     @JoinColumn(name = "professor_id")
     private Professor professorResponsavel;
 
+    public Alunos() {}
+
     public Alunos(DadosCadastroAluno dadosCadastroAluno) {
         this.id = dadosCadastroAluno.id();
         this.nome = dadosCadastroAluno.nome();
@@ -51,14 +50,12 @@ public class Alunos extends Usuario {
         this.ativo = dadosCadastroAluno.ativo();
         this.acessoSistema = dadosCadastroAluno.acessoSistema();
         this.idade = dadosCadastroAluno.idade();
+        this.dataNascimento = dadosCadastroAluno.dataNascimento();
         this.telefoneEmergencia = dadosCadastroAluno.telefoneEmergencia();
         this.possuiDoenca = dadosCadastroAluno.possuiDoenca();
         this.descricaoDoenca = dadosCadastroAluno.descricaoDoenca();
         this.focoAluno = dadosCadastroAluno.focoAluno();
         this.endereco = dadosCadastroAluno.endereco();
     }
-
-    // Fazendo construtor
-
 
 }
