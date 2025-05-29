@@ -19,7 +19,7 @@ public record DadosCadastroAluno(
         Boolean ativo,
         Boolean acessoSistema,
         Byte idade,
-        Date dataNascimento,
+        LocalDate dataNascimento,
         String telefoneEmergencia,
         Boolean possuiDoenca,
         String descricaoDoenca,
@@ -28,9 +28,5 @@ public record DadosCadastroAluno(
         LocalDateTime ultimoAcesso,
         Professor professorResponsavel
     ) {
-
-/*    public String getNome_aluno() {
-        return nome;
-    }*/
 
 }

@@ -36,10 +36,9 @@ public class Usuario implements Serializable {
     protected Byte idade;
 
     @Column
-    protected Date dataNascimento;
+    protected LocalDate dataNascimento;
 
-    // Possivel erro
-    @Column //(nullable = false)
+    @Column
     protected LocalDate criadoEm;
 
     @Column(nullable = false)
@@ -47,8 +46,6 @@ public class Usuario implements Serializable {
 
     @Column(nullable = false)
     protected Boolean acessoSistema;
-
-    // Possivel erro
 
     public Usuario() {
         this.ativo = true;
@@ -59,7 +56,7 @@ public class Usuario implements Serializable {
     @PrePersist
     public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
 
-    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, Date dataNascimento, Boolean acessoSistema, Boolean ativo,LocalDate criadoEm) {
+    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo) {
         this();
         this.nome = nome;
         this.cpf = cpf;
@@ -130,11 +127,11 @@ public class Usuario implements Serializable {
         this.idade = idade;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
