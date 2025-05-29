@@ -1,3 +1,4 @@
+/*
 package academia.boaForma.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,3 +47,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, ex.getStatusCode());
     }
 }
+*/

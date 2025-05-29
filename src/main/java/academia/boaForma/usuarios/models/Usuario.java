@@ -32,7 +32,7 @@ public class Usuario implements Serializable {
     @Column(unique = true, length = 11)
     protected String telefone;
 
-    @Column(nullable = false)
+    @Column
     protected Byte idade;
 
     @Column
