@@ -59,7 +59,7 @@ public class Usuario implements Serializable {
     @PrePersist
     public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
 
-    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo) {
+    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero) {
         this();
         this.nome = nome;
         this.cpf = cpf;
@@ -70,6 +70,7 @@ public class Usuario implements Serializable {
         this.dataNascimento = dataNascimento;
         this.acessoSistema = acessoSistema;
         this.ativo = ativo;
+        this.genero = genero;
     }
 
     // Getters e Setters
