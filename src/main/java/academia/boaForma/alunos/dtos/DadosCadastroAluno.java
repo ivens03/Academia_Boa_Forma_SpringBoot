@@ -3,16 +3,17 @@ package academia.boaForma.alunos.dtos;
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.professor.models.Professor;
+import academia.boaForma.usuarios.models.Genero;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public record DadosCadastroAluno(
         Integer id,
         String nome,
         String cpf,
         String email,
+        Genero genero,
         String senha,
         String telefone,
         LocalDate criadoEm,

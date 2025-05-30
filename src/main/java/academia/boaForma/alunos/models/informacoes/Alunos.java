@@ -44,6 +44,7 @@ public class Alunos extends Usuario {
         this.nome = dadosCadastroAluno.nome();
         this.cpf = dadosCadastroAluno.cpf();
         this.email = dadosCadastroAluno.email();
+        this.genero = dadosCadastroAluno.genero();
         this.senha = dadosCadastroAluno.senha();
         this.telefone = dadosCadastroAluno.telefone();
         this.criadoEm = dadosCadastroAluno.criadoEm();

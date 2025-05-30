@@ -23,6 +23,9 @@ public class Usuario implements Serializable {
     @Column(length = 11, unique = true)
     protected String cpf;
 
+    @Enumerated(EnumType.STRING)
+    protected Genero genero;
+
     @Column(unique = true)
     protected String email;
 
@@ -153,6 +156,14 @@ public class Usuario implements Serializable {
 
     public Boolean getAcessoSistema() {
         return acessoSistema;
+    }
+
+    public Genero getGenero() {
+        return genero;
+    }
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
     public void setAcessoSistema(Boolean acessoSistema) {
