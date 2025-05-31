@@ -59,4 +59,59 @@ public class Alunos extends Usuario {
         this.endereco = dadosCadastroAluno.endereco();
     }
 
+    public String getTelefoneEmergencia() {
+        return telefoneEmergencia;
+    }
+
+    public void setTelefoneEmergencia(String telefoneEmergencia) {
+        this.telefoneEmergencia = telefoneEmergencia;
+    }
+
+    public Boolean getPossuiDoenca() {
+        return possuiDoenca;
+    }
+
+    public void setPossuiDoenca(Boolean possuiDoenca) {
+        this.possuiDoenca = possuiDoenca;
+    }
+
+    public String getDescricaoDoenca() {
+        return descricaoDoenca;
+    }
+
+    public void setDescricaoDoenca(String descricaoDoenca) {
+        this.descricaoDoenca = descricaoDoenca;
+    }
+
+    public FocoAluno getFocoAluno() {
+        return focoAluno;
+    }
+
+    public void setFocoAluno(FocoAluno focoAluno) {
+        this.focoAluno = focoAluno;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public LocalDateTime getUltimoAcesso() {
+        return ultimoAcesso;
+    }
+
+    public void setUltimoAcesso(LocalDateTime ultimoAcesso) {
+        this.ultimoAcesso = ultimoAcesso;
+    }
+
+    public Professor getProfessorResponsavel() {
+        return professorResponsavel;
+    }
+
+    public void setProfessorResponsavel(Professor professorResponsavel) {
+        this.professorResponsavel = professorResponsavel;
+    }
 }

@@ -1,33 +1,38 @@
 package academia.boaForma.alunos.controllers;
 
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
-import academia.boaForma.alunos.services.AlunoService;
+import academia.boaForma.alunos.dtos.DadosListarAlunos;
+import academia.boaForma.alunos.models.informacoes.Alunos;
+import academia.boaForma.alunos.repositories.AlunosRepositorie;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/alunos")
 public class AlunosController {
 
-    private final AlunoService alunoService;
+    private final AlunosRepositorie alunosRepositorie;
 
-    public AlunosController(AlunoService alunoService) {
-        this.alunoService = alunoService;
+    public AlunosController(AlunosRepositorie alunosRepositorie) {
+        this.alunosRepositorie = alunosRepositorie;
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastroAluno(@RequestBody DadosCadastroAluno dadosCadastroAluno) {
-        try {
-            alunoService.cadastrarAluno(dadosCadastroAluno);
+    @Transactional
+    public ResponseEntity<String> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno) {
+            alunosRepositorie.save(new Alunos(dadosCadastroAluno));
             System.out.println(dadosCadastroAluno);
             return ResponseEntity.status(HttpStatus.CREATED).body("Aluno cadastrado com sucesso");
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
-        }
     }
+
+    @GetMapping
+    public List<DadosListarAlunos> listarAlunos() {
+        return alunosRepositorie.findAll().stream().map(DadosListarAlunos::new).toList();
+    }
+
 }
