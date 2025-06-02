@@ -3,7 +3,7 @@ package academia.boaForma.alunos.models.informacoes;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.professor.models.Professor;
-import academia.boaForma.usuarios.models.Usuario;
+import academia.boaForma.usuarios.models.UsuarioModel;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "alunos")
 @DiscriminatorValue("ALUNO")
-public class Alunos extends Usuario {
+public class AlunosModel extends UsuarioModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,9 +37,9 @@ public class Alunos extends Usuario {
     @JoinColumn(name = "professor_id")
     private Professor professorResponsavel;
 
-    public Alunos() {}
+    public AlunosModel() {}
 
-    public Alunos(DadosCadastroAluno dadosCadastroAluno) {
+    public AlunosModel(DadosCadastroAluno dadosCadastroAluno) {
         this.id = dadosCadastroAluno.id();
         this.nome = dadosCadastroAluno.nome();
         this.cpf = dadosCadastroAluno.cpf();

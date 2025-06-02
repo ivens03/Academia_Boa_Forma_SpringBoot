@@ -3,13 +3,12 @@ package academia.boaForma.usuarios.models;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "usuarios")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_usuario")
-public class Usuario implements Serializable {
+public class UsuarioModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +49,7 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     protected Boolean acessoSistema;
 
-    public Usuario() {
+    public UsuarioModel() {
         this.ativo = true;
         this.acessoSistema = true;
     }
@@ -59,7 +58,7 @@ public class Usuario implements Serializable {
     @PrePersist
     public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
 
-    public Usuario(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero) {
+    public UsuarioModel(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero) {
         this();
         this.nome = nome;
         this.cpf = cpf;

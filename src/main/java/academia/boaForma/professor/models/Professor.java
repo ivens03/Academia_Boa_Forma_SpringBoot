@@ -1,6 +1,6 @@
 package academia.boaForma.professor.models;
 
-import academia.boaForma.usuarios.models.Usuario;
+import academia.boaForma.usuarios.models.UsuarioModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "professores")
 @DiscriminatorValue("PROFESSOR")
-public class Professor extends Usuario {
+public class Professor extends UsuarioModel {
 
     private static final long serialVersionUID = 1L;
 

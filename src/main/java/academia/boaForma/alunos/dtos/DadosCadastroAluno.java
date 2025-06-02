@@ -29,5 +29,4 @@ public record DadosCadastroAluno(
         LocalDateTime ultimoAcesso,
         Professor professorResponsavel
     ) {
-
 }

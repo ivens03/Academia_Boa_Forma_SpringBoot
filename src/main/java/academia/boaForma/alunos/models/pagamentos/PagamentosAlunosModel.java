@@ -1,8 +1,7 @@
 package academia.boaForma.alunos.models.pagamentos;
 
-import academia.boaForma.alunos.models.informacoes.Alunos;
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import jakarta.persistence.*;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -41,7 +40,7 @@ public class PagamentosAlunosModel implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_aluno")
-    private Alunos id_aluno;
+    private AlunosModel id_aluno;
 
     //CONSTRUTOR
 

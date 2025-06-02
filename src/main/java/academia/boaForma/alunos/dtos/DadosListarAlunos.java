@@ -1,7 +1,7 @@
 package academia.boaForma.alunos.dtos;
 
 import academia.boaForma.alunos.models.endereco.Endereco;
-import academia.boaForma.alunos.models.informacoes.Alunos;
+import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.usuarios.models.Genero;
 
@@ -26,23 +26,23 @@ public record DadosListarAlunos(
         LocalDateTime ultimoAcesso
     ) {
 
-    public DadosListarAlunos(Alunos alunos) {
+    public DadosListarAlunos(AlunosModel alunosModel) {
         this(
-            alunos.getAcessoSistema(),
-            alunos.getAtivo(),
-            alunos.getCpf(),
-            alunos.getEmail(),
-            alunos.getGenero(),
-            alunos.getIdade(),
-            alunos.getNome(),
-            alunos.getTelefone(),
-            alunos.getTelefoneEmergencia(),
-            alunos.getPossuiDoenca(),
-            alunos.getDescricaoDoenca(),
-            alunos.getEndereco(),
-            alunos.getFocoAluno(),
-            alunos.getCriadoEm(),
-            alunos.getUltimoAcesso()
+            alunosModel.getAcessoSistema(),
+            alunosModel.getAtivo(),
+            alunosModel.getCpf(),
+            alunosModel.getEmail(),
+            alunosModel.getGenero(),
+            alunosModel.getIdade(),
+            alunosModel.getNome(),
+            alunosModel.getTelefone(),
+            alunosModel.getTelefoneEmergencia(),
+            alunosModel.getPossuiDoenca(),
+            alunosModel.getDescricaoDoenca(),
+            alunosModel.getEndereco(),
+            alunosModel.getFocoAluno(),
+            alunosModel.getCriadoEm(),
+            alunosModel.getUltimoAcesso()
         );
     }
 
