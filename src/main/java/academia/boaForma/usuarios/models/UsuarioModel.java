@@ -34,6 +34,9 @@ public class UsuarioModel implements Serializable {
     @Column(unique = true, length = 11)
     protected String telefone;
 
+    @Enumerated(EnumType.STRING)
+    protected StatusValidacaoTelefone statusValidacaoTelefone;
+
     @Column
     protected Byte idade;
 
@@ -58,7 +61,7 @@ public class UsuarioModel implements Serializable {
     @PrePersist
     public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
 
-    public UsuarioModel(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero) {
+    public UsuarioModel(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero, StatusValidacaoTelefone statusValidacaoTelefone) {
         this();
         this.nome = nome;
         this.cpf = cpf;
@@ -70,6 +73,7 @@ public class UsuarioModel implements Serializable {
         this.acessoSistema = acessoSistema;
         this.ativo = ativo;
         this.genero = genero;
+        this.statusValidacaoTelefone = statusValidacaoTelefone;
     }
 
     // Getters e Setters
@@ -170,6 +174,14 @@ public class UsuarioModel implements Serializable {
         this.acessoSistema = acessoSistema;
     }
 
+    public StatusValidacaoTelefone getStatusValidacaoTelefone() {
+        return statusValidacaoTelefone;
+    }
+
+    public void setStatusValidacaoTelefone(StatusValidacaoTelefone statusValidacaoTelefone) {
+        this.statusValidacaoTelefone = statusValidacaoTelefone;
+    }
+
     //Verificar se é melhor em outro arquivo
     // Ativar o usuario
     public void ativar() {
@@ -190,5 +202,8 @@ public class UsuarioModel implements Serializable {
     public void retirarAcessoSistema() {
         this.acessoSistema = false;
     }
+
+    //Todos os numeros no começo com o status de PENDENTE
+    public void pendenciaTelefoneUsuario() { this.statusValidacaoTelefone = StatusValidacaoTelefone.PENDENTE; }
 
 }

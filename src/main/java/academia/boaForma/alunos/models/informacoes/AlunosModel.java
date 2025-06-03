@@ -4,6 +4,7 @@ import academia.boaForma.alunos.dtos.DadosAtualizar;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.professor.models.Professor;
+import academia.boaForma.usuarios.models.StatusValidacaoTelefone;
 import academia.boaForma.usuarios.models.UsuarioModel;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -19,6 +20,10 @@ public class AlunosModel extends UsuarioModel {
 
     @Column(length = 11)
     private String telefoneEmergencia;
+
+    @JoinColumn
+    @Enumerated(EnumType.STRING)
+    protected StatusValidacaoTelefone statusValidacaoTelefoneEmergencia;
 
     @Column(nullable = false)
     private Boolean possuiDoenca;
@@ -39,7 +44,9 @@ public class AlunosModel extends UsuarioModel {
     @JoinColumn(name = "professor_id")
     private Professor professorResponsavelId;
 
-    public AlunosModel() {}
+    public AlunosModel() {
+        this.statusValidacaoTelefoneEmergencia = statusValidacaoTelefoneEmergencia.PENDENTE;
+    }
 
     public AlunosModel(DadosCadastroAluno dadosCadastroAluno) {
         this.id = dadosCadastroAluno.id();
@@ -129,6 +136,4 @@ public class AlunosModel extends UsuarioModel {
     public void setProfessorResponsavelId(Professor professorResponsavelId) {
         this.professorResponsavelId = professorResponsavelId;
     }
-
-
 }
