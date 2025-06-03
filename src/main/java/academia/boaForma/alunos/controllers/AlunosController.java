@@ -1,5 +1,6 @@
 package academia.boaForma.alunos.controllers;
 
+import academia.boaForma.alunos.dtos.DadosAtualizar;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
@@ -26,8 +27,8 @@ public class AlunosController {
         this.alunosRepositorie = alunosRepositorie;
     }
 
-    @PostMapping
     @Transactional
+    @PostMapping
     public ResponseEntity<String> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno) {
             alunosService.cadastrarAluno(dadosCadastroAluno);
             System.out.println(dadosCadastroAluno);
@@ -38,5 +39,16 @@ public class AlunosController {
     public Page<DadosListarAlunos> listarAlunos(Pageable paginacao) {
         return alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
     }
+
+    @Transactional
+    @PutMapping
+    public ResponseEntity<String> atualizarAluno(@RequestBody @Valid DadosAtualizar dadosAtualizar) {
+        var aluno = alunosRepositorie.getReferenceById(dadosAtualizar.id());
+        aluno.atualizarInformacoes(dadosAtualizar);
+        alunosRepositorie.save(aluno);
+        System.out.println(dadosAtualizar);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Atualizado com sucesso");
+    }
+
 
 }

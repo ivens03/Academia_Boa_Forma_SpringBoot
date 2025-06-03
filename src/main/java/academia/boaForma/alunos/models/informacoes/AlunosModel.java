@@ -1,10 +1,12 @@
 package academia.boaForma.alunos.models.informacoes;
 
+import academia.boaForma.alunos.dtos.DadosAtualizar;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.professor.models.Professor;
 import academia.boaForma.usuarios.models.UsuarioModel;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +37,7 @@ public class AlunosModel extends UsuarioModel {
 
     @ManyToOne
     @JoinColumn(name = "professor_id")
-    private Professor professorResponsavel;
+    private Professor professorResponsavelId;
 
     public AlunosModel() {}
 
@@ -57,6 +59,19 @@ public class AlunosModel extends UsuarioModel {
         this.descricaoDoenca = dadosCadastroAluno.descricaoDoenca();
         this.focoAluno = dadosCadastroAluno.focoAluno();
         this.endereco = dadosCadastroAluno.endereco();
+    }
+
+    public void atualizarInformacoes(@Valid DadosAtualizar dadosAtualizar) {
+        if (dadosAtualizar.acessoSistema() != null) { this.acessoSistema = dadosAtualizar.acessoSistema(); }
+        if (dadosAtualizar.email() != null) { this.email = dadosAtualizar.email(); }
+        if (dadosAtualizar.genero() != null) { this.genero = dadosAtualizar.genero(); }
+        if (dadosAtualizar.telefone() != null) { this.telefone = dadosAtualizar.telefone(); }
+        if (dadosAtualizar.telefoneEmergencia() != null) { this.telefoneEmergencia = dadosAtualizar.telefoneEmergencia(); }
+        if (dadosAtualizar.possuiDoenca() != null) { this.possuiDoenca = dadosAtualizar.possuiDoenca(); }
+        if (dadosAtualizar.descricaoDoenca() != null) { this.descricaoDoenca = dadosAtualizar.descricaoDoenca(); }
+        if (dadosAtualizar.endereco() != null) { this.endereco = dadosAtualizar.endereco(); }
+        if (dadosAtualizar.focoAluno() != null) { this.focoAluno = dadosAtualizar.focoAluno(); }
+        if (dadosAtualizar.professorResponsavelID() != null) { this.professorResponsavelId = dadosAtualizar.professorResponsavelID(); }
     }
 
     public String getTelefoneEmergencia() {
@@ -107,11 +122,13 @@ public class AlunosModel extends UsuarioModel {
         this.ultimoAcesso = ultimoAcesso;
     }
 
-    public Professor getProfessorResponsavel() {
-        return professorResponsavel;
+    public Professor getProfessorResponsavelId() {
+        return professorResponsavelId;
     }
 
-    public void setProfessorResponsavel(Professor professorResponsavel) {
-        this.professorResponsavel = professorResponsavel;
+    public void setProfessorResponsavelId(Professor professorResponsavelId) {
+        this.professorResponsavelId = professorResponsavelId;
     }
+
+
 }

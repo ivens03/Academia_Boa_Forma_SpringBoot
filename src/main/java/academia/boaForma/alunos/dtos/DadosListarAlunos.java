@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record DadosListarAlunos(
+        Integer id,
         Boolean acessoSistema,
         Boolean ativo,
         String cpf,
@@ -28,6 +29,7 @@ public record DadosListarAlunos(
 
     public DadosListarAlunos(AlunosModel alunosModel) {
         this(
+            alunosModel.getId(),
             alunosModel.getAcessoSistema(),
             alunosModel.getAtivo(),
             alunosModel.getCpf(),
