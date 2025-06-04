@@ -1,7 +1,12 @@
 package academia.boaForma.alunos.repositories;
 
+import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.usuarios.models.UsuarioModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
 
@@ -15,4 +20,6 @@ public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
 
     boolean existsByTelefoneEmergencia(String telefoneEmergencia);
 
+    @Query("SELECT a FROM AlunosModel a WHERE a.acessoSistema = true")
+    Page<AlunosModel> findAllAcessoSistema(Pageable paginacao);
 }

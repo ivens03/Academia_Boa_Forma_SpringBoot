@@ -37,7 +37,7 @@ public class AlunosController {
 
     @GetMapping
     public Page<DadosListarAlunos> listarAlunos(Pageable paginacao) {
-        return alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
+        return alunosRepositorie.findAllAcessoSistema(paginacao).map(DadosListarAlunos::new);
     }
 
     @Transactional
@@ -50,5 +50,10 @@ public class AlunosController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Atualizado com sucesso");
     }
 
-
+    @Transactional
+    @DeleteMapping("/{id}")
+    public void deletarAlunos(@PathVariable Integer id) {
+        var aluno = alunosRepositorie.getReferenceById(id);
+        aluno.usuarioDesativadoDoSistema();
+    }
 }
