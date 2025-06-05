@@ -79,6 +79,7 @@ public class AlunosModel extends UsuarioModel {
         if (dadosAtualizar.endereco() != null) { this.endereco = dadosAtualizar.endereco(); }
         if (dadosAtualizar.focoAluno() != null) { this.focoAluno = dadosAtualizar.focoAluno(); }
         if (dadosAtualizar.professorResponsavelID() != null) { this.professorResponsavelId = dadosAtualizar.professorResponsavelID(); }
+        if (dadosAtualizar.senha() != null) { this.senha = dadosAtualizar.senha(); }
     }
 
     public String getTelefoneEmergencia() {

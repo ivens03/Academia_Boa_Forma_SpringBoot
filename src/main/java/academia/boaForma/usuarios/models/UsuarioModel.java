@@ -28,7 +28,7 @@ public class UsuarioModel implements Serializable {
     @Column(unique = true)
     protected String email;
 
-    @Column(nullable = false)
+    @Column
     protected String senha;
 
     @Column(unique = true, length = 11)
@@ -59,7 +59,10 @@ public class UsuarioModel implements Serializable {
 
     //Registrar a data quando foi criado
     @PrePersist
-    public void registrarDataCriacao() { this.criadoEm = LocalDate.now(); }
+    public void registrarDataCriacao() {
+        this.criadoEm = LocalDate.now();
+        this.senha = "Boaforma2025";
+    }
 
     public UsuarioModel(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero, StatusValidacaoTelefone statusValidacaoTelefone) {
         this();

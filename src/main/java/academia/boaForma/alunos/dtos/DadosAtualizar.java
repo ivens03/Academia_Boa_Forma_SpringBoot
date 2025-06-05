@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record DadosAtualizar(
         @NotNull Integer id,
+        String senha,
         Boolean acessoSistema,
         String email,
         Genero genero,
