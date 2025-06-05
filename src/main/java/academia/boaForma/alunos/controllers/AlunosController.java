@@ -2,6 +2,7 @@ package academia.boaForma.alunos.controllers;
 
 import academia.boaForma.alunos.dtos.DadosAtualizar;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
+import academia.boaForma.alunos.dtos.DadosDetalhamentoAlunos;
 import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
@@ -37,23 +38,25 @@ public class AlunosController {
 
     @GetMapping
     public Page<DadosListarAlunos> listarAlunos(Pageable paginacao) {
-        return alunosRepositorie.findAllAcessoSistema(paginacao).map(DadosListarAlunos::new);
+        var listagemAlunosAtivivos = alunosRepositorie.findAllAcessoSistema(paginacao).map(DadosListarAlunos::new);
+        return ResponseEntity.ok(listagemAlunosAtivivos).getBody();
     }
 
     @Transactional
     @PutMapping
-    public ResponseEntity<String> atualizarAluno(@RequestBody @Valid DadosAtualizar dadosAtualizar) {
+    public ResponseEntity<DadosDetalhamentoAlunos> atualizarAluno(@RequestBody @Valid DadosAtualizar dadosAtualizar) {
         var aluno = alunosRepositorie.getReferenceById(dadosAtualizar.id());
         aluno.atualizarInformacoes(dadosAtualizar);
         alunosRepositorie.save(aluno);
         System.out.println(dadosAtualizar);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Atualizado com sucesso");
+        return ResponseEntity.ok(new DadosDetalhamentoAlunos(aluno));
     }
 
     @Transactional
     @DeleteMapping("/{id}")
-    public void deletarAlunos(@PathVariable Integer id) {
+    public ResponseEntity<String> deletarAlunos(@PathVariable Integer id) {
         var aluno = alunosRepositorie.getReferenceById(id);
         aluno.usuarioDesativadoDoSistema();
+        return ResponseEntity.noContent().build();
     }
 }
