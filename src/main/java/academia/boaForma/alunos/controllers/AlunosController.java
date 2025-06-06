@@ -6,12 +6,10 @@ import academia.boaForma.alunos.dtos.DadosDetalhamentoAlunos;
 import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
-import academia.boaForma.alunos.services.AlunosService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,12 +18,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/alunos")
 public class AlunosController {
 
-    private final AlunosService alunosService;
-
     private final AlunosRepositorie alunosRepositorie;
 
-    public AlunosController(AlunosService alunosService, AlunosRepositorie alunosRepositorie) {
-        this.alunosService = alunosService;
+    public AlunosController(AlunosRepositorie alunosRepositorie) {
         this.alunosRepositorie = alunosRepositorie;
     }
 
