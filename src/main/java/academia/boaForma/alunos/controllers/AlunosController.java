@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/alunos")
@@ -30,16 +31,24 @@ public class AlunosController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<String> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno) {
-            alunosService.cadastrarAluno(dadosCadastroAluno);
+    public ResponseEntity<DadosDetalhamentoAlunos> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno, UriComponentsBuilder uriBuilder) {
+            var aluno = new AlunosModel(dadosCadastroAluno);
+            alunosRepositorie.save(aluno);
+            var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
             System.out.println(dadosCadastroAluno);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Aluno cadastrado com sucesso");
+            return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos(aluno));
     }
 
     @GetMapping
     public Page<DadosListarAlunos> listarAlunos(Pageable paginacao) {
         var listagemAlunosAtivivos = alunosRepositorie.findAllAcessoSistema(paginacao).map(DadosListarAlunos::new);
         return ResponseEntity.ok(listagemAlunosAtivivos).getBody();
+    }
+
+    @GetMapping("/all")
+    public Page<DadosListarAlunos> listarTodosAlunos(Pageable paginacao) {
+        var listagemTodosAlunos = alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
+        return ResponseEntity.ok(listagemTodosAlunos).getBody();
     }
 
     @Transactional

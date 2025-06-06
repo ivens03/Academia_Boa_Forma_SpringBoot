@@ -39,6 +39,5 @@ public class AlunosService {
         if (!camposDuplicados.isEmpty()) {
             throw new CampoDuplicadoException(camposDuplicados);
         }
-        alunosRepositorie.save(new AlunosModel(dadosCadastroAluno));
     }
 }
