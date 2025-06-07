@@ -1,8 +1,6 @@
 package academia.boaForma.alunos.repositories;
 
-import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
-import academia.boaForma.usuarios.models.UsuarioModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
