@@ -3,6 +3,7 @@ package academia.boaForma.alunos.models.informacoes;
 import academia.boaForma.alunos.dtos.DadosAtualizar;
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.models.endereco.Endereco;
+import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
 import academia.boaForma.professor.models.Professor;
 import academia.boaForma.usuarios.models.StatusValidacaoTelefone;
 import academia.boaForma.usuarios.models.UsuarioModel;
@@ -10,6 +11,8 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "alunos")
@@ -43,6 +46,9 @@ public class AlunosModel extends UsuarioModel {
     @ManyToOne
     @JoinColumn(name = "professor_id")
     private Professor professorResponsavelId;
+
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<PagamentosAlunosModel> pagamentos = new ArrayList<>();
 
     public AlunosModel() {
         this.statusValidacaoTelefoneEmergencia = statusValidacaoTelefoneEmergencia.PENDENTE;

@@ -1,7 +1,6 @@
 package academia.boaForma.alunos.services;
 
 import academia.boaForma.alunos.dtos.DadosCadastroAluno;
-import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import academia.boaForma.exception.CampoDuplicadoException;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ public class AlunosService {
     public AlunosService(AlunosRepositorie alunosRepositorie) {
         this.alunosRepositorie = alunosRepositorie;
     }
-// Verificar se isso ta funcionando ainda kkj
     public void cadastrarAluno(DadosCadastroAluno dadosCadastroAluno) {
         List<String> camposDuplicados = new ArrayList<>();
 
