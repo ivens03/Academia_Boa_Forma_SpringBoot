@@ -20,4 +20,7 @@ public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
 
     @Query("SELECT a FROM AlunosModel a WHERE a.acessoSistema = true")
     Page<AlunosModel> findAllAcessoSistema(Pageable paginacao);
+
+    @Query("SELECT a FROM AlunosModel a WHERE LOWER(a.nome) = LOWER(:nome)")
+    AlunosModel findByNome(@Param("nome") String nome);
 }

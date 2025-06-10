@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Gestor - Academia</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide-react@0.378.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <style>
+        /* Estilos CSS permanecem os mesmos */
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        .card-bg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; opacity: 0.05; background-image: radial-gradient(circle at 100% 0%, hsl(228, 81%, 59%), transparent 40%), radial-gradient(circle at 0% 100%, hsl(250, 81%, 49%), transparent 40%); transition: opacity 0.3s ease; }
+        .group:hover .card-bg { opacity: 0.1; }
+        .background-icon { position: absolute; top: 1rem; right: 1rem; z-index: 5; opacity: 0.6; transform-origin: center center; }
+        .status-ok { border-color: #22c55e; }
+        .status-warning { border-color: #f59e0b; }
+        .status-due { border-color: #ef4444; }
+        .status-teacher { border-color: #6b7280; }
+        #user-list::-webkit-scrollbar { width: 6px; }
+        #user-list::-webkit-scrollbar-track { background: #f1f5f9; }
+        #user-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        #user-list::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<div id="app" class="min-h-screen flex flex-col">
+    <header class="bg-white shadow-md w-full p-4 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center space-x-4">
+            <img src="https://placehold.co/150x50/262D68/FFFFFF?text=ACADEMIA" alt="Logo da Academia" class="h-10 w-auto rounded">
+            <span class="hidden md:inline text-xl font-bold text-gray-700">Painel do Gestor</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="text-right">
+                <p class="font-semibold text-gray-700" th:text="|Bem-vinda, ${managerName}|">Bem-vinda, ...</p>
+                <p class="text-sm text-gray-500">Gestora</p>
+            </div>
+            <img src="https://i.pravatar.cc/150?u=maria" alt="Foto do perfil" class="h-12 w-12 rounded-full border-2 border-indigo-500">
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 md:p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
+            <div class="lg:col-span-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <a href="#" class="group relative block p-5 bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 border border-gray-200 hover:border-indigo-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h2 class="text-gray-800 text-lg font-bold">Registro de Alunos</h2>
+                                <p class="text-gray-500 text-sm mt-1">Adicione novos membros.</p>
+                            </div>
+                            <i data-lucide="clipboard-plus" class="w-10 h-10 text-indigo-400 card-icon"></i>
+                        </div>
+                    </a>
+                    <a href="#" class="group relative block p-5 bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300 border border-gray-200 hover:border-teal-500">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h2 class="text-gray-800 text-lg font-bold">Registro de Professores</h2>
+                                <p class="text-gray-500 text-sm mt-1">Cadastre profissionais.</p>
+                            </div>
+                            <i data-lucide="clipboard-user" class="w-10 h-10 text-teal-400 card-icon"></i>
+                        </div>
+                    </a>
+                    <a href="#" class="group relative block p-7 bg-[#262D68] rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 col-span-1 sm:col-span-2">
+                        <i data-lucide="users-round" class="w-20 h-20 text-white background-icon"></i>
+                        <div class="card-bg"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-white text-2xl font-bold">Gerenciamento de Alunos</h2>
+                            <p class="text-white/80 mt-2 max-w-xs">Consulte perfis, matrículas e pagamentos.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="group relative block p-7 bg-[#262D68] rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <i data-lucide="user-cog" class="w-16 h-16 text-white background-icon"></i>
+                        <div class="card-bg"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-white text-2xl font-bold">Gerenciar Professores</h2>
+                            <p class="text-white/80 mt-2">Administre dados e horários.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="group stats-card relative block p-7 bg-[#262D68] rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300">
+                        <i data-lucide="bar-chart-3" class="w-16 h-16 text-white background-icon"></i>
+                        <div class="card-bg"></div>
+                        <div class="relative z-10 flex flex-col justify-between h-full">
+                            <div><h2 class="text-white text-2xl font-bold">Estatísticas</h2></div>
+                            <p class="text-white/80 mt-2">Visualize o desempenho.</p>
+                            <div class="w-full h-16 mt-2">
+                                <svg viewBox="0 0 100 40" class="w-full h-full" preserveAspectRatio="none">
+                                    <g class="bars-group" transform="translate(0, 40) scale(1, -1)">
+                                        <rect class="bar" x="10" y="0" width="15" height="15" rx="2" fill="white" style="opacity: 0.8"/>
+                                        <rect class="bar" x="35" y="0" width="15" height="20" rx="2" fill="white" style="opacity: 0.8"/>
+                                        <rect class="bar" x="60" y="0" width="15" height="25" rx="2" fill="white" style="opacity: 0.8"/>
+                                        <rect class="bar" x="85" y="0" width="15" height="30" rx="2" fill="white" style="opacity: 0.8"/>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-1 mt-8 lg:mt-0">
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col sticky top-24">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Busca Rápida</h3>
+                    <div class="relative mb-4">
+                        <input type="text" id="user-search" placeholder="Buscar usuário..." class="w-full p-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                    </div>
+                    <div id="user-list" class="space-y-3 flex-grow overflow-y-auto pr-2 -mr-2 max-h-[50vh]">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full bg-white p-4 mt-8">
+        <div class="container mx-auto flex justify-between items-center text-sm text-gray-600">
+            <div class="flex items-center space-x-4">
+                <a href="#" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-amber-50 hover:text-amber-500 transition-all duration-200 transform hover:scale-105 cursor-help">
+                    <i data-lucide="help-circle" class="w-4 h-4"></i>
+                    <span>Ajuda</span>
+                </a>
+                <a href="#" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-red-50 hover:text-red-500 transition-all duration-200 transform hover:scale-105">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+            <p>&copy; 2025 Academia Boa Forma. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <button id="to-top-button" title="Voltar para o topo" class="hidden fixed z-50 bottom-6 right-6 bg-indigo-600 w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:bg-indigo-700 transition-all duration-300">
+        <i data-lucide="arrow-up" class="w-6 h-6"></i>
+    </button>
+</div>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DADOS VINDOS DO BACKEND ---
+        // A lista de usuários é injetada aqui pelo Thymeleaf
+        const users = /*[[${users}]]*/ [];
+
+        // --- LÓGICA DA BUSCA (permanece a mesma) ---
+        const userListContainer = document.getElementById('user-list');
+        const searchInput = document.getElementById('user-search');
+
+        const createRoleTag = (role) => {
+            const isProfessor = role === 'Professor';
+            const bgColor = isProfessor ? 'bg-teal-100 text-teal-800' : 'bg-indigo-100 text-indigo-800';
+            return `<span class="text-xs font-medium px-2 py-1 rounded-full ${bgColor}">${role}</span>`;
+        };
+
+        const renderUsers = (usersToRender) => {
+            userListContainer.innerHTML = '';
+            if (usersToRender.length === 0) {
+                userListContainer.innerHTML = `<p class="text-center text-gray-500 py-4">Nenhum usuário encontrado.</p>`;
+                return;
+            }
+
+            usersToRender.forEach(user => {
+                const userElement = document.createElement('div');
+                const barColorClass = user.role === 'Professor' ? 'bg-teal-500' : 'bg-indigo-500';
+
+                userElement.className = 'relative flex items-center justify-between p-3 pl-5 bg-white rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-100 shadow-sm overflow-hidden';
+                userElement.innerHTML = `
+                        <div class="absolute left-0 top-0 h-full w-1.5 ${barColorClass}"></div>
+                        <div class="flex items-center space-x-3">
+                            <img src="${user.avatar}" alt="Foto de ${user.name}" class="h-10 w-10 rounded-full border-4 status-${user.status}">
+                            <div>
+                                <p class="font-semibold text-gray-800">${user.name}</p>
+                            </div>
+                        </div>
+                        <div>
+                            ${createRoleTag(user.role)}
+                        </div>
+                    `;
+                userListContainer.appendChild(userElement);
+            });
+        };
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredUsers = users.filter(user =>
+                user.name.toLowerCase().includes(searchTerm)
+            );
+            renderUsers(filteredUsers);
+        });
+
+        renderUsers(users);
+
+        // --- LÓGICA GERAL E ANIMAÇÕES GSAP (permanece a mesma) ---
+        lucide.createIcons();
+
+        const toTopButton = document.getElementById('to-top-button');
+        window.onscroll = () => {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                toTopButton.classList.remove('hidden');
+            } else {
+                toTopButton.classList.add('hidden');
+            }
+        };
+        toTopButton.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.querySelectorAll('a.group').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log(`Card clicado: ${card.querySelector('h2').innerText}`);
+            });
+
+            const icon = card.querySelector('.card-icon, .background-icon');
+            if (icon) {
+                gsap.set(icon, { transformOrigin: 'center center' });
+
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(icon, {
+                        duration: 0.4,
+                        scale: 1.15,
+                        rotation: -8,
+                        ease: 'back.out(1.7)'
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(icon, {
+                        duration: 0.3,
+                        scale: 1,
+                        rotation: 0,
+                        ease: 'power1.out'
+                    });
+                });
+            }
+
+            if (card.classList.contains('stats-card')) {
+                const bars = card.querySelectorAll('.bar');
+                gsap.set(bars, { scaleY: 0, transformOrigin: 'bottom' });
+
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(bars, { duration: 0.5, scaleY: 1, stagger: 0.1, ease: 'back.out(1.7)' });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(bars, { duration: 0.3, scaleY: 0, ease: 'power1.out' });
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

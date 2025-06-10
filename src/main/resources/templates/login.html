@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Academia Boa Forma</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilos personalizados */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-container {
+            background-color: #0c1f4c; /* Cor azul escuro do design */
+        }
+        .branding-container {
+            background-color: #f0f0f0; /* Cor cinza claro do design */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Estilo para a imagem do halter */
+        .falling-element {
+            position: absolute;
+            z-index: 0;
+            /* A imagem PNG já tem sua própria cor e forma */
+        }
+
+        /* Curva no layout móvel */
+        @media (max-width: 1023px) {
+            .branding-container {
+                border-bottom-left-radius: 50% 30px;
+                border-bottom-right-radius: 50% 30px;
+                padding-bottom: 4rem; /* Espaço extra para a curva não cortar o conteúdo */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-200">
+
+<div class="flex flex-col lg:flex-row min-h-screen">
+    <!-- Seção de Branding -->
+    <div id="branding" class="branding-container lg:w-1/2 w-full flex flex-col items-center justify-center p-8 text-center relative">
+
+        <!-- Os elementos em queda serão adicionados aqui pelo JavaScript -->
+
+        <!-- Conteúdo Principal -->
+        <div class="relative z-10">
+            <!-- Logo Retangular -->
+            <img src="https://placehold.co/280x120/0c1f4c/FFFFFF?text=Logo" alt="Logo da Academia" class="mb-8 mx-auto" style="max-width: 280px;">
+
+            <h1 class="text-4xl lg:text-5xl font-bold text-[#0c1f4c] tracking-wider">ACADEMIA</h1>
+            <h1 class="text-4xl lg:text-5xl font-bold text-[#0c1f4c] tracking-wider mb-2">BOA FORMA</h1>
+            <p class="text-gray-600 text-lg">Mente e corpo trabalhando juntos</p>
+            <div class="flex items-center justify-center text-gray-500 mt-8">
+                <i class="fab fa-instagram mr-2"></i>
+                <span>academiaboaforma</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção do Formulário -->
+    <div class="form-container lg:w-1/2 w-full flex items-center justify-center p-8">
+        <div class="w-full max-w-md text-white">
+            <form>
+                <div class="mb-6">
+                    <label for="nome" class="block mb-2 text-sm font-medium">Nome</label>
+                    <input type="text" id="nome" class="bg-[#1e3a8a] border border-blue-400 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5" placeholder="Digite seu nome de usuário" required>
+                </div>
+                <div class="mb-6">
+                    <label for="senha" class="block mb-2 text-sm font-medium">Senha</label>
+                    <input type="password" id="senha" class="bg-[#1e3a8a] border border-blue-400 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5" placeholder="•••••••••" required>
+                </div>
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center">
+                        <input id="remember" type="checkbox" value="" class="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300">
+                        <label for="remember" class="ml-2 text-sm font-medium text-gray-300">Lembre-se de mim</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-400 hover:underline flex items-center">
+                        <i class="fas fa-question-circle mr-1"></i>
+                        Esqueci a senha
+                    </a>
+                </div>
+                <button type="submit" class="text-[#0c1f4c] bg-gray-200 hover:bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-bold rounded-lg text-lg w-full px-5 py-3.5 text-center transition-colors duration-300">
+                    Entrar
+                </button>
+                <p class="text-xs text-gray-400 text-center mt-8">
+                    Esta plataforma é feita pela administração da Academia Boa Forma. Caso não consiga acessar seu login ou senha, entre em contato.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('branding');
+        if (!container) return;
+
+        const elementCount = 20;
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        const dumbbellImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbvLgNfouifxrx-mLfaKzQt-vMmJFN5JQY-g&s'; // URL da imagem do halter
+
+        for (let i = 0; i < elementCount; i++) {
+            // Criação do elemento de imagem
+            const element = document.createElement('img');
+            element.src = dumbbellImageUrl;
+            element.classList.add('falling-element');
+            container.appendChild(element);
+
+            // Animação com a lógica GSAP
+            startAnimation(element);
+        }
+
+        function startAnimation(el) {
+            const size = gsap.utils.random(40, 80); // Tamanhos variados
+            gsap.set(el, {
+                width: size,
+                height: size,
+                x: gsap.utils.random(0, containerWidth - size),
+                y: -350,
+                opacity: gsap.utils.random(0.5, 1),
+            });
+
+            gsap.to(el, {
+                y: containerHeight + 100,
+                rotation: gsap.utils.random(-360, 360),
+                duration: gsap.utils.random(6, 12),
+                ease: "none",
+                onComplete: () => {
+                    startAnimation(el);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

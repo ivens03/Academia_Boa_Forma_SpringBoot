@@ -16,5 +16,5 @@ public record DadosPagamentosAlunos(
         StatusPagamentoEnum statusPagamento,
         BigDecimal valor_pago,
         StatusRecebidos statusRecebidos,
-        Integer id_aluno
+        String nome
 ) { }
