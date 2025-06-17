@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Alunos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Adiciona as cores dinâmicas ao safelist do Tailwind para garantir que sejam geradas
+        tailwind.config = {
+            safelist: [
+                'border-red-500', 'bg-red-100', 'text-red-800',
+                'border-yellow-500', 'bg-yellow-100', 'text-yellow-800',
+                'border-green-500', 'bg-green-100', 'text-green-800',
+                'border-gray-500', 'bg-gray-100', 'text-gray-800',
+                'text-red-600'
+            ]
+        }
+    </script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons (via JS) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Evita a rolagem do corpo da página */
+        }
+        .sidebar {
+            background-color: #262D68;
+        }
+        .sidebar-list {
+            height: calc(100vh - 160px); /* Ajusta a altura da lista de alunos */
+        }
+        main {
+            height: 100vh;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-100">
+
+<div class="flex flex-col md:flex-row">
+
+    <!-- Coluna da Esquerda: Lista de Alunos -->
+    <aside class="sidebar w-full md:w-1/3 lg:w-1/4 p-4 flex flex-col text-white">
+        <h1 class="text-2xl font-bold mb-4">Gerenciar Alunos</h1>
+        <div class="relative mb-4">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+            <input id="search-input" type="text" placeholder="Pesquisar por nome..." class="w-full pl-10 pr-4 py-2 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-gray-700 text-white" />
+        </div>
+
+        <div id="status-filters" class="flex items-center justify-center space-x-2 mb-4 text-sm">
+            <button data-filter="all" class="px-3 py-1 rounded-full transition-colors bg-indigo-500 text-white">Todos</button>
+            <button data-filter="paid" class="px-3 py-1 rounded-full transition-colors bg-gray-700 text-gray-300 hover:bg-gray-600">Em dia</button>
+            <button data-filter="due" class="px-3 py-1 rounded-full transition-colors bg-gray-700 text-gray-300 hover:bg-gray-600">Próximo</button>
+            <button data-filter="overdue" class="px-3 py-1 rounded-full transition-colors bg-gray-700 text-gray-300 hover:bg-gray-600">Atrasado</button>
+        </div>
+
+        <div class="sidebar-list flex-grow overflow-y-auto pr-2">
+            <ul id="student-list" class="space-y-2">
+                <!-- A lista de alunos será inserida aqui via JS -->
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Coluna da Direita: Detalhes do Aluno -->
+    <main class="w-full md:w-2/3 lg:w-3/4 p-6 overflow-y-auto">
+        <div id="student-details-container" class="hidden">
+            {/* Os detalhes do aluno serão inseridos aqui via JS */}
+        </div>
+
+        <div id="initial-view" class="flex flex-col items-center justify-center h-full text-center text-gray-500">
+            <i data-lucide="users" class="w-16 h-16 mb-4 text-gray-400"></i>
+            <h2 class="text-2xl font-bold">Selecione um aluno</h2>
+            <p class="mt-2">Clique em um aluno na lista à esquerda para ver seus detalhes.</p>
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Novo Pagamento -->
+<div id="payment-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md m-4">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Registrar Novo Pagamento</h2>
+        <form id="payment-form">
+            <div class="space-y-4">
+                <div>
+                    <label for="valor" class="block text-sm font-medium text-gray-700">Valor Pago (R$)</label>
+                    <input type="number" id="valor" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="150.00" />
+                </div>
+                <div>
+                    <label for="formaPagamento" class="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
+                    <select id="formaPagamento" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option>Pix</option>
+                        <option>Cartão de Crédito</option>
+                        <option>Cartão de Débito</option>
+                        <option>Dinheiro</option>
+                        <option>Boleto</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="vencimento" class="block text-sm font-medium text-gray-700">Próximo Vencimento</label>
+                    <input type="date" id="vencimento" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button type="button" id="cancel-payment-btn" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Confirmar Pagamento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Confirmação -->
+<div id="confirm-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm m-4">
+        <div class="flex flex-col items-center text-center">
+            <div class="p-3 bg-red-100 rounded-full">
+                <i data-lucide="alert-triangle" class="text-red-600 w-8 h-8"></i>
+            </div>
+            <h2 id="confirm-modal-title" class="text-xl font-bold text-gray-800 mt-4"></h2>
+            <p id="confirm-modal-message" class="text-gray-600 mt-2"></p>
+        </div>
+        <div class="mt-6 flex justify-center gap-3">
+            <button id="cancel-confirm-btn" class="px-4 py-2 w-full bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">Cancelar</button>
+            <button id="confirm-action-btn" class="px-4 py-2 w-full bg-red-600 text-white rounded-md hover:bg-red-700">Sim, continuar</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- DADOS MOCK ---
+        let students = [
+            { id: 1, nome: 'Maria Carmem Leoni', foto: 'https://placehold.co/100x100/EAD2AC/333?text=ML', cpf: '012.345.678-10', genero: 'Feminino', nascimento: '1995-08-10', email: 'maria.leoni@example.com', telefone: '85991466655', telefoneEmergencia: '85985478523', possuiCondicaoMedica: true, descricaoCondicaoMedica: 'Asma. Requer uso de bombinha em caso de crise.', endereco: { cep: '60170-001', logradouro: 'Avenida Beira Mar', numero: '178', complemento: 'Apto 502', bairro: 'Meireles' }, pagamentos: [ { id: 101, dataPagamento: '2024-05-10', valor: 150.00, formaPagamento: 'Pix', vencimento: '2024-06-10' }, { id: 102, dataPagamento: '2024-06-11', valor: 150.00, formaPagamento: 'Cartão de Crédito', vencimento: '2024-07-12' } ] },
+            { id: 2, nome: 'João Pedro da Silva', foto: 'https://placehold.co/100x100/A2C4E8/333?text=JS', cpf: '123.456.789-00', genero: 'Masculino', nascimento: '2001-03-15', email: 'joao.silva@example.com', telefone: '11987654321', telefoneEmergencia: '11912345678', possuiCondicaoMedica: false, descricaoCondicaoMedica: '', endereco: { cep: '01311-000', logradouro: 'Avenida Paulista', numero: '1578', complemento: 'Conjunto 101', bairro: 'Bela Vista' }, pagamentos: [ { id: 201, dataPagamento: '2024-06-20', valor: 120.00, formaPagamento: 'Dinheiro', vencimento: '2024-07-20' } ] },
+            { id: 3, nome: 'Ana Clara Souza', foto: 'https://placehold.co/100x100/D2E8A2/333?text=AS', cpf: '987.654.321-11', genero: 'Feminino', nascimento: '1998-11-22', email: 'ana.souza@example.com', telefone: '21998877665', telefoneEmergencia: '21988776655', possuiCondicaoMedica: false, descricaoCondicaoMedica: '', endereco: { cep: '22071-020', logradouro: 'Avenida Atlântica', numero: '2000', complemento: '', bairro: 'Copacabana' }, pagamentos: [ { id: 301, dataPagamento: '2024-06-01', valor: 180.00, formaPagamento: 'Pix', vencimento: '2024-07-01' } ] },
+            { id: 4, nome: 'Carlos Eduardo Lima', foto: 'https://placehold.co/100x100/E8A2A2/333?text=CL', cpf: '111.222.333-44', genero: 'Masculino', nascimento: '1990-01-30', email: 'carlos.lima@example.com', telefone: '31988887777', telefoneEmergencia: '31977778888', possuiCondicaoMedica: true, descricaoCondicaoMedica: 'Hipertensão. Medicação de uso contínuo.', endereco: { cep: '30140-071', logradouro: 'Avenida Afonso Pena', numero: '1500', complemento: 'Sala 3', bairro: 'Centro' }, pagamentos: [ { id: 401, dataPagamento: '2024-05-05', valor: 150.00, formaPagamento: 'Débito', vencimento: '2024-06-05' } ] }
+        ];
+
+        let selectedStudentId = null;
+        let searchTerm = '';
+        let statusFilter = 'all';
+
+        // --- ELEMENTOS DO DOM ---
+        const studentListEl = document.getElementById('student-list');
+        const searchInputEl = document.getElementById('search-input');
+        const statusFiltersEl = document.getElementById('status-filters');
+        const initialViewEl = document.getElementById('initial-view');
+        const studentDetailsContainerEl = document.getElementById('student-details-container');
+        const paymentModalEl = document.getElementById('payment-modal');
+        const paymentFormEl = document.getElementById('payment-form');
+        const cancelPaymentBtn = document.getElementById('cancel-payment-btn');
+        const confirmModalEl = document.getElementById('confirm-modal');
+
+
+        // --- FUNÇÕES HELPER ---
+        const calculateAge = (dob) => {
+            if (!dob) return '';
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            return age;
+        };
+
+        const getPaymentStatus = (dueDate) => {
+            if (!dueDate) return { key: 'na', text: 'N/A', color: 'gray-500', variant: 'bg-gray-100 text-gray-800' };
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const vencimento = new Date(dueDate);
+            vencimento.setHours(23, 59, 59, 999);
+            const diffTime = vencimento - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays < 0) return { key: 'overdue', text: 'Atrasado', color: 'red-500', variant: 'bg-red-100 text-red-800' };
+            if (diffDays <= 7) return { key: 'due', text: 'Perto do Vencimento', color: 'yellow-500', variant: 'bg-yellow-100 text-yellow-800' };
+            return { key: 'paid', text: 'Em dia', color: 'green-500', variant: 'bg-green-100 text-green-800' };
+        };
+
+        const formatDate = (dateString) => {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const userTimezoneOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() + userTimezoneOffset).toLocaleDateString('pt-BR');
+        };
+
+        // --- FUNÇÕES DE RENDERIZAÇÃO ---
+        function renderStudentList() {
+            const filteredStudents = students
+                .map(s => {
+                    const latestPayment = [...s.pagamentos].sort((a, b) => new Date(b.vencimento) - new Date(a.vencimento))[0];
+                    return { ...s, status: getPaymentStatus(latestPayment ? latestPayment.vencimento : null) };
+                })
+                .filter(student => {
+                    const searchMatch = student.nome.toLowerCase().includes(searchTerm.toLowerCase());
+                    const statusMatch = statusFilter === 'all' || student.status.key === statusFilter;
+                    return searchMatch && statusMatch;
+                });
+
+            studentListEl.innerHTML = ''; // Limpa a lista
+            filteredStudents.forEach(student => {
+                const li = document.createElement('li');
+                li.className = `flex items-center p-2 rounded-lg cursor-pointer transition-all ${selectedStudentId === student.id ? 'bg-indigo-500 bg-opacity-30' : 'hover:bg-gray-700'}`;
+                li.dataset.id = student.id;
+                li.innerHTML = `
+                        <div class="relative p-1 rounded-full border-2 border-${student.status.color}">
+                            <img src="${student.foto}" alt="${student.nome}" class="w-10 h-10 rounded-full object-cover" />
+                        </div>
+                        <span class="font-medium text-gray-100 flex-grow ml-3">${student.nome}</span>
+                    `;
+                li.addEventListener('click', () => {
+                    selectedStudentId = student.id;
+                    renderStudentList(); // Re-render a lista para destacar a seleção
+                    renderStudentDetails();
+                });
+                studentListEl.appendChild(li);
+            });
+        }
+
+        function renderStudentDetails() {
+            if (selectedStudentId === null) {
+                initialViewEl.classList.remove('hidden');
+                studentDetailsContainerEl.classList.add('hidden');
+                return;
+            }
+
+            const student = students.find(s => s.id === selectedStudentId);
+            if (!student) return;
+
+            const latestPayment = [...student.pagamentos].sort((a, b) => new Date(b.vencimento) - new Date(a.vencimento))[0];
+            const status = getPaymentStatus(latestPayment ? latestPayment.vencimento : null);
+
+            const getEditableFieldHTML = (id, label, value) => `
+                    <div class="flex flex-col">
+                        <label class="text-sm font-medium text-gray-500">${label}</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <p class="w-full px-3 py-2 text-gray-800 bg-gray-50 rounded-md min-h-[42px] flex items-center">${value}</p>
+                            <button data-edit-id="${id}" class="p-2 text-indigo-600 bg-indigo-100 rounded-md hover:bg-indigo-200">
+                                <i data-lucide="edit" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+            const paymentsHTML = student.pagamentos
+                .sort((a, b) => new Date(b.dataPagamento) - new Date(a.dataPagamento))
+                .map(p => {
+                    const pStatus = getPaymentStatus(p.vencimento);
+                    return `
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${formatDate(p.dataPagamento)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${formatDate(p.vencimento)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${pStatus.variant}">${pStatus.text}</span></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">R$ ${p.valor.toFixed(2)}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">${p.formaPagamento}</td>
+                            </tr>
+                        `;
+                }).join('');
+
+            studentDetailsContainerEl.innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900">${student.nome}</h2>
+                            <div class="mt-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${status.variant}">
+                                <i data-lucide="${status.key === 'paid' ? 'check-circle' : (status.key === 'due' ? 'alert-triangle' : 'x-circle')}" class="w-4 h-4 mr-2"></i>
+                                Mensalidade ${status.text}
+                            </div>
+                        </div>
+                        <img src="${student.foto}" alt="${student.nome}" class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md -mt-2"/>
+                    </div>
+
+                    <div class="border-b border-gray-200">
+                         <nav id="tabs" class="-mb-px flex space-x-6">
+                            <button data-tab="personal" class="py-3 px-1 border-b-2 font-medium text-sm border-indigo-500 text-indigo-600">Dados Pessoais</button>
+                            <button data-tab="address" class="py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Endereço</button>
+                            <button data-tab="payments" class="py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">Pagamentos</button>
+                         </nav>
+                    </div>
+
+                    <div class="mt-6">
+                        <div id="tab-personal" class="">
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="bg-gray-50 p-4 rounded-lg"><label class="text-sm font-medium text-gray-500">CPF</label><p class="text-gray-800 font-semibold">${student.cpf}</p></div>
+                                <div class="bg-gray-50 p-4 rounded-lg"><label class="text-sm font-medium text-gray-500">Gênero</label><p class="text-gray-800 font-semibold">${student.genero}</p></div>
+                                <div class="bg-gray-50 p-4 rounded-lg"><label class="text-sm font-medium text-gray-500">Data de Nascimento</label><p class="text-gray-800 font-semibold">${formatDate(student.nascimento)}</p></div>
+                                <div class="bg-gray-50 p-4 rounded-lg"><label class="text-sm font-medium text-gray-500">Idade</label><p class="text-gray-800 font-semibold">${calculateAge(student.nascimento)} anos</p></div>
+                                ${getEditableFieldHTML('email', 'E-mail', student.email)}
+                                ${getEditableFieldHTML('telefone', 'Telefone', student.telefone)}
+                                ${getEditableFieldHTML('telefoneEmergencia', 'Telefone de Emergência', student.telefoneEmergencia)}
+                                <div class="md:col-span-2 lg:col-span-3 p-4 rounded-lg border border-gray-200">
+                                     <h4 class="font-bold text-gray-700 mb-3">Informações de Saúde</h4>
+                                     <div class="flex items-center mb-3">
+                                        <input type="checkbox" id="has-condition" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" ${student.possuiCondicaoMedica ? 'checked' : ''} />
+                                        <label for="has-condition" class="ml-2 block text-sm text-gray-900">Possui alguma condição médica?</label>
+                                     </div>
+                                     <div id="condition-description-container" class="${student.possuiCondicaoMedica ? '' : 'hidden'}">
+                                        <label for="condition-desc" class="block text-sm font-medium text-gray-700">Descrição da Condição</label>
+                                        <textarea id="condition-desc" rows="3" class="mt-1 shadow-sm block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">${student.descricaoCondicaoMedica || ''}</textarea>
+                                     </div>
+                                     <button id="save-medical-btn" class="mt-4 flex items-center gap-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors text-sm font-medium">
+                                         <i data-lucide="heart-pulse" class="w-4 h-4"></i> Salvar Informações de Saúde
+                                     </button>
+                                     <p id="medical-save-message" class="mt-2 text-sm text-green-600 hidden"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-address" class="hidden">
+                           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                ${getEditableFieldHTML('cep', 'CEP', student.endereco.cep)}
+                                ${getEditableFieldHTML('logradouro', 'Logradouro', student.endereco.logradouro)}
+                                ${getEditableFieldHTML('numero', 'Número', student.endereco.numero)}
+                                ${getEditableFieldHTML('complemento', 'Complemento', student.endereco.complemento)}
+                                ${getEditableFieldHTML('bairro', 'Bairro', student.endereco.bairro)}
+                           </div>
+                        </div>
+                        <div id="tab-payments" class="hidden">
+                            <div class="flex justify-between items-center mb-4">
+                                 <h3 class="text-xl font-bold text-gray-800">Histórico de Pagamentos</h3>
+                                 <button id="add-payment-btn" class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                                    Registrar Pagamento
+                                 </button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Pag.</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimento</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Pago</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Forma Pag.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        ${paymentsHTML}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Ações</h3>
+                         <p id="reset-password-message" class="hidden mb-4 p-3 bg-green-100 text-green-800 border border-green-200 rounded-md text-sm"></p>
+                        <button id="reset-password-btn" class="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 font-medium">Redefinir Senha</button>
+                    </div>
+                </div>
+                `;
+
+            initialViewEl.classList.add('hidden');
+            studentDetailsContainerEl.classList.remove('hidden');
+            addDetailsEventListeners();
+            lucide.createIcons(); // Recria os ícones
+        }
+
+        // --- EVENT LISTENERS ---
+        function addDetailsEventListeners() {
+            // Abas
+            const tabs = document.getElementById('tabs');
+            tabs.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const tabName = e.target.dataset.tab;
+
+                    // Botões
+                    tabs.querySelectorAll('button').forEach(btn => {
+                        btn.classList.remove('border-indigo-500', 'text-indigo-600');
+                        btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    });
+                    e.target.classList.add('border-indigo-500', 'text-indigo-600');
+                    e.target.classList.remove('border-transparent', 'text-gray-500');
+
+                    // Conteúdo
+                    ['personal', 'address', 'payments'].forEach(tabId => {
+                        document.getElementById(`tab-${tabId}`).classList.add('hidden');
+                    });
+                    document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+                }
+            });
+
+            // Botão de adicionar pagamento
+            document.getElementById('add-payment-btn').addEventListener('click', () => {
+                paymentModalEl.classList.remove('hidden');
+            });
+
+            // Botão de redefinir senha
+            document.getElementById('reset-password-btn').addEventListener('click', showResetPasswordConfirm);
+
+            // Checkbox de condição médica
+            const hasConditionCheck = document.getElementById('has-condition');
+            const conditionDescContainer = document.getElementById('condition-description-container');
+            hasConditionCheck.addEventListener('change', (e) => {
+                conditionDescContainer.classList.toggle('hidden', !e.target.checked);
+            });
+
+            // Botão de salvar informações médicas
+            document.getElementById('save-medical-btn').addEventListener('click', saveMedicalInfo);
+        }
+
+        function saveMedicalInfo() {
+            const student = students.find(s => s.id === selectedStudentId);
+            const hasCondition = document.getElementById('has-condition').checked;
+            const description = document.getElementById('condition-desc').value;
+
+            student.possuiCondicaoMedica = hasCondition;
+            student.descricaoCondicaoMedica = hasCondition ? description : '';
+
+            const msgEl = document.getElementById('medical-save-message');
+            msgEl.textContent = 'Informações médicas salvas com sucesso!';
+            msgEl.classList.remove('hidden');
+            setTimeout(() => msgEl.classList.add('hidden'), 4000);
+        }
+
+        function showResetPasswordConfirm() {
+            const modal = document.getElementById('confirm-modal');
+            document.getElementById('confirm-modal-title').textContent = 'Redefinir Senha';
+            document.getElementById('confirm-modal-message').textContent = 'Essa ação irá redefinir a senha do usuário para o valor padrão. Deseja continuar?';
+            modal.classList.remove('hidden');
+
+            const confirmBtn = document.getElementById('confirm-action-btn');
+            const cancelBtn = document.getElementById('cancel-confirm-btn');
+
+            const confirmAction = () => {
+                console.log(`Senha do aluno ${students.find(s=>s.id === selectedStudentId).nome} redefinida.`);
+                const msgEl = document.getElementById('reset-password-message');
+                msgEl.textContent = 'A senha do aluno foi redefinida para o valor padrão com sucesso!';
+                msgEl.classList.remove('hidden');
+                modal.classList.add('hidden');
+                setTimeout(() => msgEl.classList.add('hidden'), 4000);
+                confirmBtn.removeEventListener('click', confirmAction);
+                cancelBtn.removeEventListener('click', cancelAction);
+            };
+
+            const cancelAction = () => {
+                modal.classList.add('hidden');
+                confirmBtn.removeEventListener('click', confirmAction);
+                cancelBtn.removeEventListener('click', cancelAction);
+            };
+
+            confirmBtn.addEventListener('click', confirmAction);
+            cancelBtn.addEventListener('click', cancelAction);
+        }
+
+        searchInputEl.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderStudentList();
+        });
+
+        statusFiltersEl.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                statusFilter = e.target.dataset.filter;
+                // Atualiza o estilo dos botões
+                statusFiltersEl.querySelectorAll('button').forEach(btn => {
+                    const filter = btn.dataset.filter;
+                    const colors = { all: 'bg-indigo-500', paid: 'bg-green-600', due: 'bg-yellow-500', overdue: 'bg-red-600'};
+                    if (filter === statusFilter) {
+                        btn.className = `px-3 py-1 rounded-full transition-colors ${colors[filter]} text-white`;
+                    } else {
+                        btn.className = 'px-3 py-1 rounded-full transition-colors bg-gray-700 text-gray-300 hover:bg-gray-600';
+                    }
+                });
+                renderStudentList();
+            }
+        });
+
+        cancelPaymentBtn.addEventListener('click', () => {
+            paymentModalEl.classList.add('hidden');
+            paymentFormEl.reset();
+        });
+
+        paymentFormEl.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newPayment = {
+                id: Date.now(),
+                valor: parseFloat(e.target.valor.value),
+                formaPagamento: e.target.formaPagamento.value,
+                vencimento: e.target.vencimento.value,
+                dataPagamento: new Date().toISOString().split('T')[0]
+            };
+
+            const student = students.find(s => s.id === selectedStudentId);
+            student.pagamentos.push(newPayment);
+
+            renderStudentDetails();
+            renderStudentList();
+
+            paymentModalEl.classList.add('hidden');
+            paymentFormEl.reset();
+        });
+
+        // --- INICIALIZAÇÃO ---
+        renderStudentList();
+        lucide.createIcons();
+    });
+</script>
+
+</body>
+</html>
