@@ -71,10 +71,6 @@
                     <div>
                         <label for="gender" class="block text-sm font-medium text-gray-600">Gênero</label>
                         <select id="gender" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option>Masculino</option>
-                            <option>Feminino</option>
-                            <option>Outro</option>
-                            <option>Prefiro não informar</option>
                         </select>
                     </div>
                     <div>
@@ -131,18 +127,7 @@
                     <div class="md:col-span-2">
                         <label for="student_focus" class="block text-sm font-medium text-gray-600">Foco / Objetivo do Aluno</label>
                         <select id="student_focus" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option>Hipertrofia</option>
-                            <option>Perda de Peso</option>
-                            <option>Emagrecimento</option>
-                            <option>Condicionamento Físico</option>
-                            <option>Recuperação</option>
-                            <option>Força</option>
-                            <option>Ganho de Massa</option>
-                            <option>Ganho de Massa Muscular</option>
-                            <option>Flexibilidade</option>
-                            <option>Reabilitação</option>
-                            <option>Melhora no Desempenho Esportivo</option>
-                            <option>Outros</option>
+                            <!-- Opções serão carregadas via JavaScript -->
                         </select>
                     </div>
                 </div>
@@ -193,7 +178,6 @@
                 </div>
             </div>
 
-
             <!-- Botões de Ação -->
             <div class="flex items-center justify-end space-x-4 pt-4">
                 <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
@@ -214,6 +198,56 @@
             lucide.createIcons();
         }
 
+        // Carrega os gêneros do backend
+        const genderSelect = document.getElementById('gender');
+        fetch('/alunos/generos')
+            .then(response => response.json())
+            .then(generos => {
+                generos.forEach(genero => {
+                    const option = document.createElement('option');
+                    option.value = genero;
+                    option.textContent = genero.replace('_', ' ').toLowerCase();
+                    genderSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar gêneros:', error);
+                // Se falhar, mantém as opções padrão
+                const defaultOptions = ['MASCULINO', 'FEMININO', 'OUTROS', 'NAO_INDENTIFICADO'];
+                defaultOptions.forEach(genero => {
+                    const option = document.createElement('option');
+                    option.value = genero;
+                    option.textContent = genero.replace('_', ' ').toLowerCase();
+                    genderSelect.appendChild(option);
+                });
+            });
+
+        // Carrega os focos do backend
+        const focusSelect = document.getElementById('student_focus');
+        fetch('/alunos/focos')
+            .then(response => response.json())
+            .then(focos => {
+                focos.forEach(foco => {
+                    const option = document.createElement('option');
+                    option.value = foco;
+                    option.textContent = foco.replace('_', ' ').toLowerCase();
+                    focusSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar focos:', error);
+                // Se falhar, mantém as opções padrão
+                const defaultOptions = ['HIPERTROFIA', 'PERDA_PESO', 'EMAGRECIMENTO', 'CONDICIONAMENTO_FISICO',
+                    'RECUPERACAO', 'FORCA', 'GANHO_MASSA', 'GANHO_MASSA_MUSCULAR', 'FLEXIBILIDADE',
+                    'REABILITACAO', 'MELHORA_DESEMPENHO_ESPORTIVO', 'OUTROS'];
+                defaultOptions.forEach(foco => {
+                    const option = document.createElement('option');
+                    option.value = foco;
+                    option.textContent = foco.replace('_', ' ').toLowerCase();
+                    focusSelect.appendChild(option);
+                });
+            });
+
         // Lógica para calcular a idade a partir da data de nascimento
         const birthDateInput = document.getElementById('birth_date');
         const ageInput = document.getElementById('age');
@@ -232,6 +266,54 @@
                 ageInput.value = '';
             }
         });
+
+        // Configuração do formulário
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Coleta todos os campos do formulário
+                const formData = {
+                    nome: document.getElementById('name').value,
+                    cpf: document.getElementById('cpf').value,
+                    email: document.getElementById('email').value,
+                    telefone: document.getElementById('phone').value,
+                    telefoneEmergencia: document.getElementById('emergency_phone').value,
+                    dataNascimento: document.getElementById('birth_date').value,
+                    genero: document.getElementById('gender').value,
+                    possuiDoenca: document.querySelector('input[name="hasDisease"]:checked')?.value === 'true',
+                    descricaoDoenca: document.getElementById('disease_description')?.value || '',
+                    objetivo: document.getElementById('student_focus').value,
+                    professorResponsavel: document.getElementById('responsible_teacher').value,
+                    cep: document.getElementById('cep').value,
+                    logradouro: document.getElementById('logradouro').value,
+                    numero: document.getElementById('numero').value,
+                    complemento: document.getElementById('complemento').value,
+                    bairro: document.getElementById('bairro').value
+                };
+
+                try {
+                    const response = await fetch('/alunos', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    if (response.ok) {
+                        alert('Aluno cadastrado com sucesso!');
+                        window.location.href = '/homeGestor';
+                    } else {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Erro ao cadastrar aluno');
+                    }
+                } catch (error) {
+                    alert('Erro ao cadastrar aluno: ' + error.message);
+                }
+            });
+        }
     });
 
     // Função para buscar endereço via CEP (usando a API ViaCEP)
@@ -246,7 +328,6 @@
                 if (!data.erro) {
                     document.getElementById('logradouro').value = data.logradouro;
                     document.getElementById('bairro').value = data.bairro;
-                    // Você pode adicionar cidade e estado se tiver os campos
                 } else {
                     // Limpa os campos se o CEP não for encontrado
                     document.getElementById('logradouro').value = '';
@@ -256,7 +337,6 @@
             })
             .catch(error => console.error('Erro ao buscar CEP:', error));
     }
-
 </script>
 </body>
 </html>

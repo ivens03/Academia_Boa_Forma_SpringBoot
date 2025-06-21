@@ -5,7 +5,9 @@ import academia.boaForma.alunos.dtos.DadosCadastroAluno;
 import academia.boaForma.alunos.dtos.DadosDetalhamentoAlunos;
 import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
+import academia.boaForma.usuarios.models.Genero;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -14,9 +16,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/alunos")
 public class AlunosController {
+
+    @GetMapping("/focos")
+    public ResponseEntity<List<String>> listarFocos() {
+        return ResponseEntity.ok(Arrays.stream(FocoAluno.values())
+                .map(FocoAluno::name)
+                .collect(Collectors.toList()));
+    }
 
     private final AlunosRepositorie alunosRepositorie;
 
@@ -63,4 +76,19 @@ public class AlunosController {
         aluno.usuarioDesativadoDoSistema();
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/generos")
+    public ResponseEntity<List<String>> listarGeneros() {
+        return ResponseEntity.ok(Arrays.stream(Genero.values())
+                .map(Genero::name)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/focoAluno")
+    public ResponseEntity<List<String>> listarFocoAluno() {
+        return ResponseEntity.ok(Arrays.stream(FocoAluno.values())
+                .map(FocoAluno::name)
+                .collect(Collectors.toList()));
+    }
+
 }
