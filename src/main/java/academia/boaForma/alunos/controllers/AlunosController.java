@@ -24,13 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/alunos")
 public class AlunosController {
 
-    @GetMapping("/focos")
-    public ResponseEntity<List<String>> listarFocos() {
-        return ResponseEntity.ok(Arrays.stream(FocoAluno.values())
-                .map(FocoAluno::name)
-                .collect(Collectors.toList()));
-    }
-
     private final AlunosRepositorie alunosRepositorie;
 
     public AlunosController(AlunosRepositorie alunosRepositorie) {
