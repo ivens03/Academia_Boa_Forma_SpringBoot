@@ -1,8 +1,10 @@
 package academia.boaForma.alunos.repositories;
 
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
+import academia.boaForma.usuarios.models.UsuarioModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +26,7 @@ public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
 
     @Query("SELECT a FROM AlunosModel a WHERE LOWER(a.nome) = LOWER(:nome)")
     AlunosModel findByNome(@Param("nome") String nome);
+
+    @Query("SELECT p FROM AlunosModel p WHERE p.id = :id")
+    AlunosModel alunoById(@Param("id") Integer id);
 }

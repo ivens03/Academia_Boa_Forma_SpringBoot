@@ -65,8 +65,9 @@ public class AlunosController {
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarAlunos(@PathVariable Integer id) {
-        var aluno = alunosRepositorie.getReferenceById(id);
-        aluno.usuarioDesativadoDoSistema();
+        var aluno = alunosRepositorie.alunoById(id);
+        aluno.usuarioDesativado();
+        alunosRepositorie.save(aluno);
         return ResponseEntity.noContent().build();
     }
 

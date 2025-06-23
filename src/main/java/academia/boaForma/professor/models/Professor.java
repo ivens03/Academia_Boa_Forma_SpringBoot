@@ -1,5 +1,6 @@
 package academia.boaForma.professor.models;
 
+import academia.boaForma.professor.dtos.DadosAtualizarProfessor;
 import academia.boaForma.professor.dtos.DadosCadastroProfessor;
 import academia.boaForma.usuarios.models.Genero;
 import academia.boaForma.usuarios.models.UsuarioModel;
@@ -49,13 +50,14 @@ public class Professor extends UsuarioModel {
         this.professorMaster = dadosCadastroProfessor.professorMaster();
     }
 
-    //AJUSTAR PARA ATUALIZAR PROFESSOR
-/*    public Professor(@Valid DadosCadastroProfessor dadosCadastroProfessor) {
-        if (dadosCadastroProfessor.acessoSistema() != null) { this.acessoSistema = dadosCadastroProfessor.acessoSistema(); }
-        if (dadosCadastroProfessor.email() != null) { this.email = dadosCadastroProfessor.email(); }
-        if (dadosCadastroProfessor.telefone() != null) { this.telefone = dadosCadastroProfessor.telefone(); }
-        if (dadosCadastroProfessor.telefoneEmergencia() != null) { this.telefoneEmergencia = dadosCadastroProfessor.telefoneEmergencia(); }
-    }*/
+    public void atualizarInformacoes(@Valid DadosAtualizarProfessor dadosAtualizarProfessor) {
+        if (dadosAtualizarProfessor.acessoSistema() != null) { this.acessoSistema = dadosAtualizarProfessor.acessoSistema(); }
+        if (dadosAtualizarProfessor.email() != null) { this.email = dadosAtualizarProfessor.email(); }
+        if (dadosAtualizarProfessor.genero() != null) { this.genero = dadosAtualizarProfessor.genero(); }
+        if (dadosAtualizarProfessor.telefone() != null) { this.telefone = dadosAtualizarProfessor.telefone(); }
+        if (dadosAtualizarProfessor.telefoneEmergencia() != null) { this.telefoneEmergencia = dadosAtualizarProfessor.telefoneEmergencia(); }
+    }
+
 
     // Getters e Setters
 
@@ -92,4 +94,5 @@ public class Professor extends UsuarioModel {
     public void promover() {
         this.professorMaster = true;
     }
+
 }

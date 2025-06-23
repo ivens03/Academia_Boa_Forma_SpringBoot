@@ -185,7 +185,6 @@ public class UsuarioModel implements Serializable {
         this.statusValidacaoTelefone = statusValidacaoTelefone;
     }
 
-    //Verificar se é melhor em outro arquivo
     // Ativar o usuario
     public void ativar() {
         this.ativo = true;
@@ -209,6 +208,5 @@ public class UsuarioModel implements Serializable {
     //Todos os numeros no começo com o status de PENDENTE
     public void pendenciaTelefoneUsuario() { this.statusValidacaoTelefone = StatusValidacaoTelefone.PENDENTE; }
 
-    //Desativar o acesso ao sistema
-    public void usuarioDesativadoDoSistema() { this.acessoSistema = false; }
+    public void usuarioDesativado() { this.ativo = false; }
 }
