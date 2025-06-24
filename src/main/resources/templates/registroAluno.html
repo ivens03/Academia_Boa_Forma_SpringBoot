@@ -302,6 +302,9 @@
                 e.preventDefault();
 
                 // Coleta todos os campos do formulário
+                // Obtém a idade do campo de idade (que é calculada automaticamente)
+                const idade = parseInt(document.getElementById('age').value);
+                
                 const formData = {
                     nome: document.getElementById('name').value,
                     cpf: document.getElementById('cpf').value,
@@ -309,6 +312,7 @@
                     telefone: document.getElementById('phone').value,
                     telefoneEmergencia: document.getElementById('emergency_phone').value,
                     dataNascimento: document.getElementById('birth_date').value,
+                    idade: idade,
                     genero: document.getElementById('gender').value,
                     possuiDoenca: document.querySelector('input[name="hasDisease"]:checked')?.value === 'true',
                     descricaoDoenca: document.getElementById('disease_description')?.value || '',
