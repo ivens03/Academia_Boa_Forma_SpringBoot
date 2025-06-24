@@ -330,42 +330,6 @@
             }
         });
 
-        // Função para buscar endereço via CEP (usando a API ViaCEP)
-        const fetchAddress = (cep) => {
-            const cleanCep = cep.replace(/\D/g, '');
-            if (cleanCep.length !== 8) return;
-
-            fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.erro) {
-                        document.getElementById('logradouro').value = data.logradouro || '';
-                        document.getElementById('bairro').value = data.bairro || '';
-                    } else {
-                        showModal('Erro', 'CEP não encontrado.', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao buscar CEP:', error);
-                    showModal('Erro de Rede', 'Não foi possível buscar o CEP. Verifique sua conexão.', 'error');
-                });
-        }
-
-        // Lógica de submissão do formulário
-        const form = document.getElementById('teacher-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            // Validação customizada
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                showModal('Atenção', 'Por favor, preencha todos os campos obrigatórios.', 'warning');
-                return;
-            }
-
-            // Remove caracteres especiais dos números
-            const cleanNumber = (num) => num.replace(/[^\d]/g, '');
-
         // Configuração do formulário
         const form = document.querySelector('form');
         if (form) {
@@ -376,12 +340,17 @@
                 // Obtém a idade do campo de idade (que é calculada automaticamente)
                 const idade = parseInt(document.getElementById('age').value);
                 
+                // Remove formatação dos campos antes de enviar
+                const cpf = document.getElementById('cpf').value.replace(/[.-]/g, '');
+                const telefone = document.getElementById('phone').value.replace(/[()\s-]/g, '');
+                const telefoneEmergencia = document.getElementById('emergency_phone').value.replace(/[()\s-]/g, '');
+                
                 const formData = {
                     nome: document.getElementById('name').value,
-                    cpf: document.getElementById('cpf').value,
+                    cpf: cpf,
                     email: document.getElementById('email').value,
-                    telefone: document.getElementById('phone').value,
-                    telefoneEmergencia: document.getElementById('emergency_phone').value,
+                    telefone: telefone,
+                    telefoneEmergencia: telefoneEmergencia,
                     dataNascimento: document.getElementById('birth_date').value,
                     idade: idade,
                     genero: document.getElementById('gender').value,

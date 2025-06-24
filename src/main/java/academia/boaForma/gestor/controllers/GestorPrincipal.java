@@ -20,4 +20,15 @@ public class GestorPrincipal {
     public String telaCadastroProfessor() {
         return "registroProfessor";
     }
+
+    @GetMapping("/gerenciamentoAlunos")
+    public String telaGerenciamentoAlunos() {
+        return "gerenciamentoAlunos";
+    }
+
+    @GetMapping("/login")
+    public String telaLogin() {
+        return "login";
+    }
+
 }

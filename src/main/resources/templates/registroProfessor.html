@@ -294,15 +294,15 @@
                 return;
             }
 
-            // Remove caracteres especiais dos números
-            const cleanNumber = (num) => num.replace(/[^\d]/g, '');
+            // Remove pontos e traço do CPF antes de enviar
+            const cpf = document.getElementById('cpf').value.replace(/[.-]/g, '');
             
             const formData = {
                 nome: document.getElementById('name').value,
-                cpf: cleanNumber(document.getElementById('cpf').value),
+                cpf: cpf,
                 email: document.getElementById('email').value,
-                telefone: cleanNumber(document.getElementById('phone').value),
-                telefoneEmergencia: cleanNumber(document.getElementById('emergency_phone').value),
+                telefone: document.getElementById('phone').value,
+                telefoneEmergencia: document.getElementById('emergency_phone').value,
                 dataNascimento: document.getElementById('birth_date').value,
                 idade: parseInt(document.getElementById('age').value) || 0,
                 genero: document.getElementById('gender').value,
@@ -327,15 +327,20 @@
                 });
 
                 if (response.ok) {
-                    alert('Professor cadastrado com sucesso!');
-                    window.location.href = '/homeGestor';
+                    const data = await response.json();
+                    showModal('Sucesso!', 'Professor cadastrado com sucesso!', 'success');
+                    // Redireciona para a página de gestor após 2 segundos
+                    setTimeout(() => {
+                        window.location.href = '/homeGestor';
+                    }, 2000);
                 } else {
-                    const error = await response.json();
-                    throw new Error(error.message || 'Erro ao cadastrar professor');
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Erro ao cadastrar professor');
                 }
+
             } catch (error) {
                 console.error('Erro ao cadastrar professor:', error);
-                alert('Erro ao cadastrar professor: ' + error.message);
+                showModal('Erro', 'Não foi possível cadastrar o professor. Tente novamente mais tarde.', 'error');
             }
         });
 
