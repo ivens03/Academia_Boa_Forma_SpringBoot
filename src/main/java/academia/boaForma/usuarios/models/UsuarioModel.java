@@ -46,22 +46,21 @@ public class UsuarioModel implements Serializable {
     @Column
     protected LocalDate criadoEm;
 
-    @Column(nullable = false)
+    @Column
     protected Boolean ativo;
 
-    @Column(nullable = false)
+    @Column
     protected Boolean acessoSistema;
 
-    public UsuarioModel() {
-        this.ativo = true;
-        this.acessoSistema = true;
-    }
+    public UsuarioModel() { }
 
     //Registrar a data quando foi criado
     @PrePersist
     public void registrarDataCriacao() {
         this.criadoEm = LocalDate.now();
         this.senha = "Boaforma2025";
+        this.ativo = true;
+        this.acessoSistema = true;
     }
 
     public UsuarioModel(String nome, String cpf, String email, String senha, String telefone, Byte idade, LocalDate dataNascimento, Boolean acessoSistema, Boolean ativo, Genero genero, StatusValidacaoTelefone statusValidacaoTelefone) {
@@ -209,4 +208,6 @@ public class UsuarioModel implements Serializable {
     public void pendenciaTelefoneUsuario() { this.statusValidacaoTelefone = StatusValidacaoTelefone.PENDENTE; }
 
     public void usuarioDesativado() { this.ativo = false; }
+
+    public void findAllAcessoSistema() { this.acessoSistema = false; }
 }

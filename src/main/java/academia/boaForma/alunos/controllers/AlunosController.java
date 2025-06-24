@@ -7,6 +7,7 @@ import academia.boaForma.alunos.dtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
+import academia.boaForma.professor.repositories.ProfessorRepositorie;
 import academia.boaForma.usuarios.models.Genero;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -25,19 +26,22 @@ import java.util.stream.Collectors;
 public class AlunosController {
 
     private final AlunosRepositorie alunosRepositorie;
+    private final ProfessorRepositorie professorRepositorie;
 
-    public AlunosController(AlunosRepositorie alunosRepositorie) {
+    public AlunosController(AlunosRepositorie alunosRepositorie, ProfessorRepositorie professorRepositorie) {
         this.alunosRepositorie = alunosRepositorie;
+        this.professorRepositorie = professorRepositorie;
     }
 
     @Transactional
     @PostMapping
     public ResponseEntity<DadosDetalhamentoAlunos> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno, UriComponentsBuilder uriBuilder) {
-            var aluno = new AlunosModel(dadosCadastroAluno);
-            alunosRepositorie.save(aluno);
-            var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
-            System.out.println(dadosCadastroAluno);
-            return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos(aluno));
+        var professor = professorRepositorie.professorById(dadosCadastroAluno.professorResponsavelId());
+        var aluno = new AlunosModel(dadosCadastroAluno);
+        aluno.setProfessorResponsavelId(professor);
+        alunosRepositorie.save(aluno);
+        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos(aluno));
     }
 
     @GetMapping
@@ -66,7 +70,7 @@ public class AlunosController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarAlunos(@PathVariable Integer id) {
         var aluno = alunosRepositorie.alunoById(id);
-        aluno.usuarioDesativado();
+        aluno.findAllAcessoSistema();
         alunosRepositorie.save(aluno);
         return ResponseEntity.noContent().build();
     }

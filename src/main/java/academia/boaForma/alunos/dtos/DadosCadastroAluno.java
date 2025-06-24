@@ -2,7 +2,7 @@ package academia.boaForma.alunos.dtos;
 
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
-import academia.boaForma.professor.models.Professor;
+
 import academia.boaForma.usuarios.models.Genero;
 
 import java.time.LocalDate;
@@ -27,6 +27,6 @@ public record DadosCadastroAluno(
         FocoAluno focoAluno,
         Endereco endereco,
         LocalDateTime ultimoAcesso,
-        Professor professorResponsavel
+        Integer professorResponsavelId
     ) {
 }

@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/professor")
 public class ProfessorController {
@@ -21,6 +24,21 @@ public class ProfessorController {
     private final ProfessorRepositorie professorRepositorie;
 
     public ProfessorController(ProfessorRepositorie professorRepositorie) { this.professorRepositorie = professorRepositorie; }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<List<DadosListarProfessores>> listarProfessoresAtivos() {
+        System.out.println("Buscando professores ativos...");
+        var professores = professorRepositorie.findAllAcessoSistema(Pageable.unpaged()).getContent();
+        System.out.println("Total de professores encontrados: " + professores.size());
+        professores.forEach(p -> System.out.println("Professor: " + p.getNome() + ", Ativo: " + p.getAtivo() + ", Acesso: " + p.getAcessoSistema()));
+        
+        List<DadosListarProfessores> professoresAtivos = professores.stream()
+            .map(DadosListarProfessores::new)
+            .collect(Collectors.toList());
+            
+        System.out.println("Total de professores convertidos para DTO: " + professoresAtivos.size());
+        return ResponseEntity.ok(professoresAtivos);
+    }
 
     @Transactional
     @PostMapping
@@ -57,7 +75,7 @@ public class ProfessorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarProfessor(@PathVariable Integer id) {
         var professor = professorRepositorie.professorById(id);
-        professor.usuarioDesativado();
+        professor.findAllAcessoSistema();
         professorRepositorie.save(professor);
         return ResponseEntity.noContent().build();
     }

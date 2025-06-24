@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface ProfessorRepositorie extends JpaRepository<Professor, Long> {
 
-    @Query("SELECT a FROM Professor a WHERE a.acessoSistema = true")
+    @Query("SELECT p FROM Professor p WHERE p.acessoSistema = true AND p.ativo = true")
     Page<Professor> findAllAcessoSistema(Pageable paginacao);
 
     @Query("SELECT p FROM Professor p WHERE p.id = :id")
