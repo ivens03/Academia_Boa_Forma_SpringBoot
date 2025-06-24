@@ -178,9 +178,9 @@
 
             <!-- Botões de Ação -->
             <div class="flex items-center justify-end space-x-4 pt-4">
-                <button type="button" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                <a th:href="@{/homeGestor}" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
                     Cancelar
-                </button>
+                </a>
                 <button type="submit" class="inline-flex justify-center px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
                     Registrar Aluno
                 </button>
@@ -294,6 +294,77 @@
                 ageInput.value = '';
             }
         });
+
+        // Função para aplicar máscara de CPF
+        const applyCpfMask = (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value.slice(0, 14); // Limita ao formato 000.000.000-00
+        };
+
+        // Aplica a máscara de CPF
+        document.getElementById('cpf').addEventListener('input', applyCpfMask);
+
+        // Função para aplicar máscara de telefone
+        const applyPhoneMask = (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 15); // Limita ao formato (XX) XXXXX-XXXX
+        };
+
+        document.getElementById('phone').addEventListener('input', applyPhoneMask);
+        document.getElementById('emergency_phone').addEventListener('input', applyPhoneMask);
+
+        // Função para aplicar máscara de CEP e buscar endereço
+        const cepInput = document.getElementById('cep');
+        cepInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{5})(\d)/, '$1-$2');
+            e.target.value = value.slice(0, 9);
+
+            if (e.target.value.length === 9) {
+                fetchAddress(e.target.value);
+            }
+        });
+
+        // Função para buscar endereço via CEP (usando a API ViaCEP)
+        const fetchAddress = (cep) => {
+            const cleanCep = cep.replace(/\D/g, '');
+            if (cleanCep.length !== 8) return;
+
+            fetch(`https://viacep.com.br/ws/${cleanCep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.erro) {
+                        document.getElementById('logradouro').value = data.logradouro || '';
+                        document.getElementById('bairro').value = data.bairro || '';
+                    } else {
+                        showModal('Erro', 'CEP não encontrado.', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar CEP:', error);
+                    showModal('Erro de Rede', 'Não foi possível buscar o CEP. Verifique sua conexão.', 'error');
+                });
+        }
+
+        // Lógica de submissão do formulário
+        const form = document.getElementById('teacher-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Validação customizada
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                showModal('Atenção', 'Por favor, preencha todos os campos obrigatórios.', 'warning');
+                return;
+            }
+
+            // Remove caracteres especiais dos números
+            const cleanNumber = (num) => num.replace(/[^\d]/g, '');
 
         // Configuração do formulário
         const form = document.querySelector('form');
