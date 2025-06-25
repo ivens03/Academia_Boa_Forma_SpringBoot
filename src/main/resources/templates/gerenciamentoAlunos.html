@@ -37,7 +37,7 @@
             background-color: #262D68;
         }
         .sidebar-list {
-            height: calc(100vh - 220px); /* Ajusta a altura da lista de alunos */
+            height: calc(100vh - 270px); /* Ajusta a altura da lista de alunos */
         }
         main {
             height: 100vh;
@@ -88,11 +88,20 @@
             </div>
         </div>
 
+        <!-- Botão Voltar -->
+        <div class="mb-4">
+            <button id="back-btn" class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                Voltar
+            </button>
+        </div>
+
         <div class="sidebar-list flex-grow overflow-y-auto pr-2">
             <ul id="student-list" class="space-y-2">
                 <!-- A lista de alunos será inserida aqui via JS -->
             </ul>
         </div>
+
     </aside>
 
     <!-- Coluna da Direita: Detalhes do Aluno -->
@@ -185,6 +194,7 @@
         const paymentFormEl = document.getElementById('payment-form');
         const cancelPaymentBtn = document.getElementById('cancel-payment-btn');
         const confirmModalEl = document.getElementById('confirm-modal');
+        const backBtn = document.getElementById('back-btn');
 
         // Elementos dos filtros dropdown
         const paymentStatusFilterBtn = document.getElementById('payment-status-filter-btn');
@@ -579,6 +589,10 @@
 
             paymentModalEl.classList.add('hidden');
             paymentFormEl.reset();
+        });
+
+        backBtn.addEventListener('click', () => {
+            window.history.back();
         });
 
         // --- INICIALIZAÇÃO ---
