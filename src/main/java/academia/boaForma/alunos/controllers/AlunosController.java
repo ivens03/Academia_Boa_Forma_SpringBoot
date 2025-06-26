@@ -61,14 +61,6 @@ public class AlunosController {
         var listagemTodosAlunos = alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
         return ResponseEntity.ok(listagemTodosAlunos).getBody();
     }
-    
-    @GetMapping("/todos")
-    public ResponseEntity<List<DadosListarAlunos>> listarTodosAlunosSemPaginacao() {
-        List<DadosListarAlunos> alunos = alunosRepositorie.findAll().stream()
-            .map(DadosListarAlunos::new)
-            .collect(Collectors.toList());
-        return ResponseEntity.ok(alunos);
-    }
 
     @Transactional
     @PutMapping

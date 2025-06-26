@@ -1,0 +1,39 @@
+/* src/main/resources/static/css/login.css */
+
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos personalizados */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.form-container {
+    background-color: #0c1f4c; /* Cor azul escuro do design */
+}
+
+.branding-container {
+    background-color: #f0f0f0; /* Cor cinza claro do design */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Estilo para a imagem do halter */
+.falling-element {
+    position: absolute;
+    z-index: 0;
+    /* A imagem PNG já tem sua própria cor e forma */
+}
+
+/* Curva no layout móvel */
+@media (max-width: 1023px) {
+    .branding-container {
+        border-bottom-left-radius: 50% 30px;
+        border-bottom-right-radius: 50% 30px;
+        padding-bottom: 4rem; /* Espaço extra para a curva não cortar o conteúdo */
+    }
+}

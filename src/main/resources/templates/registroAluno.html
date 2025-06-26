@@ -1,48 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Novo Aluno</title>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide-react@0.378.0/dist/umd/lucide.min.js"></script>
-
-    <!-- Alpine.js para interatividade -->
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
-        }
-        /* Melhora a aparência dos inputs de seleção */
-        select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            padding-right: 2.5rem;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/registroAluno.css}">
 </head>
 <body class="text-gray-800">
 
 <div class="min-h-screen flex flex-col items-center justify-center p-4">
-
     <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
-        <!-- Cabeçalho do Formulário -->
         <div class="bg-[#262D68] p-6">
             <div class="flex items-center space-x-4">
                 <i data-lucide="clipboard-plus" class="w-10 h-10 text-white/80"></i>
@@ -53,10 +28,8 @@
             </div>
         </div>
 
-        <!-- Formulário com seções lógicas -->
-        <form class="p-8 space-y-8" x-data="{ hasDisease: 'false', cep: '' }">
+        <form class="p-8 space-y-8" x-data="{ hasDisease: 'false' }" novalidate>
 
-            <!-- Seção: Informações Pessoais -->
             <div class="border-b border-gray-200 pb-6">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">Informações Pessoais</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -70,8 +43,7 @@
                     </div>
                     <div>
                         <label for="gender" class="block text-sm font-medium text-gray-600">Gênero</label>
-                        <select id="gender" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                        </select>
+                        <select id="gender" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required></select>
                     </div>
                     <div>
                         <label for="birth_date" class="block text-sm font-medium text-gray-600">Data de Nascimento</label>
@@ -84,7 +56,6 @@
                 </div>
             </div>
 
-            <!-- Seção: Contato -->
             <div class="border-b border-gray-200 pb-6">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">Contato</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -94,16 +65,15 @@
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-600">Telefone</label>
-                        <input type="tel" id="phone" placeholder="(00) 9 0000-0000" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+                        <input type="tel" id="phone" placeholder="(00) 90000-0000" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
                     </div>
                     <div>
                         <label for="emergency_phone" class="block text-sm font-medium text-gray-600">Telefone de Emergência</label>
-                        <input type="tel" id="emergency_phone" placeholder="(00) 9 0000-0000" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <input type="tel" id="emergency_phone" placeholder="(00) 90000-0000" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
                 </div>
             </div>
 
-            <!-- Seção: Saúde e Objetivos -->
             <div class="border-b border-gray-200 pb-6">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">Saúde e Objetivos</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -115,7 +85,7 @@
                                 <span class="ml-2">Sim</span>
                             </label>
                             <label class="inline-flex items-center">
-                                <input type="radio" x-model="hasDisease" value="false" class="form-radio text-indigo-600">
+                                <input type="radio" x-model="hasDisease" value="false" checked class="form-radio text-indigo-600">
                                 <span class="ml-2">Não</span>
                             </label>
                         </div>
@@ -126,21 +96,18 @@
                     </div>
                     <div class="md:col-span-2">
                         <label for="student_focus" class="block text-sm font-medium text-gray-600">Foco / Objetivo do Aluno</label>
-                        <select id="student_focus" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <!-- Opções serão carregadas via JavaScript -->
-                        </select>
+                        <select id="student_focus" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required></select>
                     </div>
                 </div>
             </div>
 
-            <!-- Seção: Endereço -->
             <div class="border-b border-gray-200 pb-6">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">Endereço</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div class="md:col-span-2">
                         <label for="cep" class="block text-sm font-medium text-gray-600">CEP</label>
                         <div class="relative mt-1">
-                            <input type="text" id="cep" x-model="cep" @input.debounce.500ms="$nextTick(() => fetchAddress())" placeholder="00000-000" class="block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <input type="text" id="cep" @input.debounce.500ms="fetchAddress()" placeholder="00000-000" class="block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <button type="button" @click="fetchAddress()" class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-indigo-600">
                                 <i data-lucide="search" class="w-5 h-5"></i>
                             </button>
@@ -165,18 +132,16 @@
                 </div>
             </div>
 
-            <!-- Seção: Detalhes do Plano -->
             <div>
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">Escolha O Professor Responsável</h2>
                 <div>
                     <label for="responsible_teacher" class="block text-sm font-medium text-gray-600">Professor Responsável</label>
                     <select id="responsible_teacher" name="professorResponsavelId" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
-                        <option value="">Carregando professores...</option>
+                        <option value="">Carregando...</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Botões de Ação -->
             <div class="flex items-center justify-end space-x-4 pt-4">
                 <a th:href="@{/homeGestor}" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
                     Cancelar
@@ -189,227 +154,7 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Inicializa os ícones do Lucide
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
+<script th:src="@{/js/registroAluno.js}"></script>
 
-        // Carrega os professores ativos
-        async function carregarProfessores() {
-            try {
-                const response = await fetch('/professor/ativos');
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
-                const professores = await response.json();
-                const select = document.getElementById('responsible_teacher');
-                select.innerHTML = '<option value="">Selecione um professor</option>';
-                
-                professores.forEach(professor => {
-                    const option = document.createElement('option');
-                    option.value = professor.id;
-                    option.textContent = professor.nome;
-                    select.appendChild(option);
-                });
-                
-                console.log('Professores carregados com sucesso:', professores);
-            } catch (error) {
-                console.error('Erro ao carregar professores:', error);
-                // Mostra uma mensagem de erro para o usuário
-                const select = document.getElementById('responsible_teacher');
-                select.innerHTML = '<option value="">Erro ao carregar professores</option>';
-            }
-        }
-
-        // Carrega os professores assim que a página carrega
-        carregarProfessores();
-
-        // Carrega os gêneros do backend
-        const genderSelect = document.getElementById('gender');
-        fetch('/alunos/generos')
-            .then(response => response.json())
-            .then(generos => {
-                generos.forEach(genero => {
-                    const option = document.createElement('option');
-                    option.value = genero;
-                    option.textContent = genero.replace('_', ' ').toLowerCase();
-                    genderSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao carregar gêneros:', error);
-                // Se falhar, mantém as opções padrão
-                const defaultOptions = ['MASCULINO', 'FEMININO', 'OUTROS', 'NAO_INDENTIFICADO'];
-                defaultOptions.forEach(genero => {
-                    const option = document.createElement('option');
-                    option.value = genero;
-                    option.textContent = genero.replace('_', ' ').toLowerCase();
-                    genderSelect.appendChild(option);
-                });
-            });
-
-        // Carrega os focos do backend
-        const focusSelect = document.getElementById('student_focus');
-        fetch('/alunos/focos')
-            .then(response => response.json())
-            .then(focos => {
-                focos.forEach(foco => {
-                    const option = document.createElement('option');
-                    option.value = foco;
-                    option.textContent = foco.replace('_', ' ').toLowerCase();
-                    focusSelect.appendChild(option);
-                });
-            })
-            .catch(error => {
-                console.error('Erro ao carregar focos:', error);
-                // Se falhar, mantém as opções padrão
-                const defaultOptions = ['HIPERTROFIA', 'PERDA_PESO', 'EMAGRECIMENTO', 'CONDICIONAMENTO_FISICO',
-                    'RECUPERACAO', 'FORCA', 'GANHO_MASSA', 'GANHO_MASSA_MUSCULAR', 'FLEXIBILIDADE',
-                    'REABILITACAO', 'MELHORA_DESEMPENHO_ESPORTIVO', 'OUTROS'];
-                defaultOptions.forEach(foco => {
-                    const option = document.createElement('option');
-                    option.value = foco;
-                    option.textContent = foco.replace('_', ' ').toLowerCase();
-                    focusSelect.appendChild(option);
-                });
-            });
-
-        // Lógica para calcular a idade a partir da data de nascimento
-        const birthDateInput = document.getElementById('birth_date');
-        const ageInput = document.getElementById('age');
-
-        birthDateInput.addEventListener('change', () => {
-            if (birthDateInput.value) {
-                const birthDate = new Date(birthDateInput.value);
-                const today = new Date();
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
-                ageInput.value = age >= 0 ? age : '';
-            } else {
-                ageInput.value = '';
-            }
-        });
-
-        // Função para aplicar máscara de CPF
-        const applyCpfMask = (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = value.slice(0, 14); // Limita ao formato 000.000.000-00
-        };
-
-        // Aplica a máscara de CPF
-        document.getElementById('cpf').addEventListener('input', applyCpfMask);
-
-        // Função para aplicar máscara de telefone
-        const applyPhoneMask = (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 15); // Limita ao formato (XX) XXXXX-XXXX
-        };
-
-        document.getElementById('phone').addEventListener('input', applyPhoneMask);
-        document.getElementById('emergency_phone').addEventListener('input', applyPhoneMask);
-
-        // Função para aplicar máscara de CEP e buscar endereço
-        const cepInput = document.getElementById('cep');
-        cepInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            value = value.replace(/^(\d{5})(\d)/, '$1-$2');
-            e.target.value = value.slice(0, 9);
-
-            if (e.target.value.length === 9) {
-                fetchAddress(e.target.value);
-            }
-        });
-
-        // Configuração do formulário
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                // Coleta todos os campos do formulário
-                // Obtém a idade do campo de idade (que é calculada automaticamente)
-                const idade = parseInt(document.getElementById('age').value);
-                
-                // Remove formatação dos campos antes de enviar
-                const cpf = document.getElementById('cpf').value.replace(/[.-]/g, '');
-                const telefone = document.getElementById('phone').value.replace(/[()\s-]/g, '');
-                const telefoneEmergencia = document.getElementById('emergency_phone').value.replace(/[()\s-]/g, '');
-                
-                const formData = {
-                    nome: document.getElementById('name').value,
-                    cpf: cpf,
-                    email: document.getElementById('email').value,
-                    telefone: telefone,
-                    telefoneEmergencia: telefoneEmergencia,
-                    dataNascimento: document.getElementById('birth_date').value,
-                    idade: idade,
-                    genero: document.getElementById('gender').value,
-                    possuiDoenca: document.querySelector('input[name="hasDisease"]:checked')?.value === 'true',
-                    descricaoDoenca: document.getElementById('disease_description')?.value || '',
-                    objetivo: document.getElementById('student_focus').value,
-                    professorResponsavel: document.getElementById('responsible_teacher').value,
-                    cep: document.getElementById('cep').value,
-                    logradouro: document.getElementById('logradouro').value,
-                    numero: document.getElementById('numero').value,
-                    complemento: document.getElementById('complemento').value,
-                    bairro: document.getElementById('bairro').value
-                };
-
-                try {
-                    const response = await fetch('/alunos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData),
-                    });
-
-                    if (response.ok) {
-                        alert('Aluno cadastrado com sucesso!');
-                        window.location.href = '/homeGestor';
-                    } else {
-                        const error = await response.json();
-                        throw new Error(error.message || 'Erro ao cadastrar aluno');
-                    }
-                } catch (error) {
-                    alert('Erro ao cadastrar aluno: ' + error.message);
-                }
-            });
-        }
-    });
-
-    // Função para buscar endereço via CEP (usando a API ViaCEP)
-    function fetchAddress() {
-        // Acessa o 'cep' do escopo do Alpine.js
-        const cepInput = document.getElementById('cep');
-        const cep = cepInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-        if (cep.length !== 8) return;
-
-        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.erro) {
-                    document.getElementById('logradouro').value = data.logradouro || '';
-                    document.getElementById('bairro').value = data.bairro || '';
-                } else {
-                    // Limpa os campos se o CEP não for encontrado
-                    document.getElementById('logradouro').value = '';
-                    document.getElementById('bairro').value = '';
-                    alert('CEP não encontrado.');
-                }
-            })
-            .catch(error => console.error('Erro ao buscar CEP:', error));
-    }
-</script>
 </body>
 </html>

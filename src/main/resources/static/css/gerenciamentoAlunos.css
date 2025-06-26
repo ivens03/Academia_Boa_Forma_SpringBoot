@@ -1,0 +1,22 @@
+/* src/main/resources/static/css/gerenciamentoAlunos.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+    overflow: hidden; /* Evita a rolagem do corpo da página */
+}
+.sidebar {
+    background-color: #262D68;
+}
+.sidebar-list {
+    height: calc(100vh - 270px); /* Ajusta a altura da lista de alunos */
+}
+main {
+    height: 100vh;
+}
+
+/* A classe .hidden já é padrão do Tailwind, mas para garantir
+   que funcione antes do JS carregar, podemos mantê-la aqui.
+*/
+.hidden {
+    display: none;
+}
