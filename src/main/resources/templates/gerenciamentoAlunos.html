@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,37 +63,58 @@
         <div class="grid grid-cols-2 gap-2 mb-4">
             <!-- Filtro de Status de Pagamento -->
             <div class="relative">
-                <button id="payment-status-filter-btn" class="flex items-center justify-between w-full px-3 py-2 text-sm text-left bg-gray-700 rounded-lg hover:bg-gray-600">
-                    <span id="payment-status-filter-text">Todos os Status</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                <button id="payment-status-filter-btn" class="flex items-center justify-between w-full px-3 py-2 text-sm text-left bg-gray-700 rounded-lg hover:bg-gray-600 transition-all">
+                    <span id="payment-status-filter-text" class="flex-grow">Todos os Status</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 flex-shrink-0 ml-2 transition-transform duration-200"></i>
                 </button>
                 <div id="payment-status-filter-options" class="hidden absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg">
-                    <a href="#" data-filter="all" class="block px-3 py-2 text-sm hover:bg-gray-600">Todos os Status</a>
-                    <a href="#" data-filter="paid" class="block px-3 py-2 text-sm hover:bg-gray-600">Em dia</a>
-                    <a href="#" data-filter="due" class="block px-3 py-2 text-sm hover:bg-gray-600">Próximo Venc.</a>
-                    <a href="#" data-filter="overdue" class="block px-3 py-2 text-sm hover:bg-gray-600">Atrasado</a>
+                    <a href="#" data-filter="all" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Todos os Status</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
+                    <a href="#" data-filter="paid" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Em dia</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
+                    <a href="#" data-filter="due" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Próximo Venc.</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
+                    <a href="#" data-filter="overdue" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Atrasado</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
                 </div>
             </div>
             <!-- Filtro de Status do Usuário -->
             <div class="relative">
-                <button id="user-status-filter-btn" class="flex items-center justify-between w-full px-3 py-2 text-sm text-left bg-gray-700 rounded-lg hover:bg-gray-600">
-                    <span id="user-status-filter-text">Usuários Ativos</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                <button id="user-status-filter-btn" class="flex items-center justify-between w-full px-3 py-2 text-sm text-left bg-gray-700 rounded-lg hover:bg-gray-600 transition-all">
+                    <span id="user-status-filter-text" class="flex-grow">Todos</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 flex-shrink-0 ml-2 transition-transform duration-200"></i>
                 </button>
                 <div id="user-status-filter-options" class="hidden absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg">
-                    <a href="#" data-filter="active" class="block px-3 py-2 text-sm hover:bg-gray-600">Ativos</a>
-                    <a href="#" data-filter="inactive" class="block px-3 py-2 text-sm hover:bg-gray-600">Inativos</a>
-                    <a href="#" data-filter="all" class="block px-3 py-2 text-sm hover:bg-gray-600">Todos</a>
+                    <a href="#" data-filter="active" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Ativos</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
+                    <a href="#" data-filter="inactive" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Inativos</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400 hidden"></i>
+                    </a>
+                    <a href="#" data-filter="all" class="flex items-center justify-between px-3 py-2 text-sm hover:bg-gray-600">
+                        <span>Todos</span>
+                        <i data-lucide="check" class="w-4 h-4 text-green-400" style="display: none;"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Botão Voltar -->
         <div class="mb-4">
-            <button id="back-btn" class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+            <a th:href="@{/homeGestor}" class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
                 <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
                 Voltar
-            </button>
+            </a>
         </div>
 
         <div class="sidebar-list flex-grow overflow-y-auto pr-2">
@@ -203,6 +224,59 @@
         const userStatusFilterBtn = document.getElementById('user-status-filter-btn');
         const userStatusFilterText = document.getElementById('user-status-filter-text');
         const userStatusFilterOptions = document.getElementById('user-status-filter-options');
+        
+        // Inicializar dropdowns com valores padrão
+        const updatePaymentStatusFilter = (value, text) => {
+            paymentStatusFilter = value;
+            paymentStatusFilterText.textContent = text;
+            
+            // Atualiza os ícones de seleção
+            const options = paymentStatusFilterOptions.querySelectorAll('a');
+            options.forEach(option => {
+                const icon = option.querySelector('i');
+                if (option.dataset.filter === value) {
+                    icon.style.display = 'block';
+                } else {
+                    icon.style.display = 'none';
+                }
+            });
+            
+            renderStudentList();
+        };
+
+        const updateUserStatusFilter = (value, text) => {
+            userStatusFilter = value;
+            userStatusFilterText.textContent = text;
+            
+            // Atualiza os ícones de seleção
+            const options = userStatusFilterOptions.querySelectorAll('a');
+            options.forEach(option => {
+                const icon = option.querySelector('i');
+                if (option.dataset.filter === value) {
+                    icon.style.display = 'block';
+                } else {
+                    icon.style.display = 'none';
+                }
+            });
+            
+            renderStudentList();
+        };
+
+        // Configurar dropdowns
+        setupDropdown(paymentStatusFilterBtn, paymentStatusFilterOptions, updatePaymentStatusFilter);
+        setupDropdown(userStatusFilterBtn, userStatusFilterOptions, updateUserStatusFilter);
+
+        // Inicializar ícones Lucide primeiro
+        lucide.createIcons();
+        
+        // Definir valores iniciais
+        updatePaymentStatusFilter('all', 'Todos os Status');
+        updateUserStatusFilter('all', 'Todos');
+        
+        // Garantir que os ícones de check estejam ocultos inicialmente
+        document.querySelectorAll('#payment-status-filter-options i, #user-status-filter-options i').forEach(icon => {
+            icon.style.display = 'none';
+        });
 
         // --- FUNÇÕES HELPER ---
         const calculateAge = (dob) => {
@@ -237,17 +311,46 @@
 
         // --- FUNÇÕES DE RENDERIZAÇÃO ---
         function renderStudentList() {
+            console.log('Filtrando com:', { searchTerm, paymentStatusFilter, userStatusFilter });
+            
             const filteredStudents = students
-                .map(s => {
-                    const latestPayment = [...s.pagamentos].sort((a, b) => new Date(b.vencimento) - new Date(a.vencimento))[0];
-                    return { ...s, status: getPaymentStatus(latestPayment ? latestPayment.vencimento : null) };
+                .map(student => {
+                    // Encontra o pagamento mais recente
+                    const latestPayment = student.pagamentos && student.pagamentos.length > 0
+                        ? [...student.pagamentos].sort((a, b) => 
+                            new Date(b.vencimento) - new Date(a.vencimento)
+                          )[0]
+                        : null;
+                    
+                    // Adiciona o status ao objeto do aluno
+                    return { 
+                        ...student, 
+                        status: getPaymentStatus(latestPayment ? latestPayment.vencimento : null),
+                        latestPaymentDate: latestPayment ? latestPayment.vencimento : null
+                    };
                 })
                 .filter(student => {
+                    // Filtra por termo de busca
                     const searchMatch = student.nome.toLowerCase().includes(searchTerm.toLowerCase());
-                    const paymentStatusMatch = paymentStatusFilter === 'all' || student.status.key === paymentStatusFilter;
-                    const userStatusMatch = userStatusFilter === 'all' || student.ativo === (userStatusFilter === 'active');
+                    
+                    // Filtra por status de pagamento
+                    let paymentStatusMatch = true;
+                    if (paymentStatusFilter !== 'all') {
+                        paymentStatusMatch = student.status.key === paymentStatusFilter;
+                    }
+                    
+                    // Filtra por status do usuário
+                    let userStatusMatch = true;
+                    if (userStatusFilter === 'active') {
+                        userStatusMatch = student.ativo === true;
+                    } else if (userStatusFilter === 'inactive') {
+                        userStatusMatch = student.ativo === false;
+                    } // 'all' não filtra nada
+                    
                     return searchMatch && paymentStatusMatch && userStatusMatch;
                 });
+                
+            console.log('Alunos filtrados:', filteredStudents);
 
             studentListEl.innerHTML = ''; // Limpa a lista
             if (filteredStudents.length === 0) {
@@ -420,25 +523,74 @@
 
         // --- FUNÇÕES DE CONTROLE DOS MODAIS E AÇÕES ---
         function setupDropdown(buttonEl, optionsEl, onSelect) {
-            buttonEl.addEventListener('click', (e) => {
+            if (!buttonEl || !optionsEl) return;
+            
+            // Função para fechar o dropdown
+            const closeDropdown = () => {
+                optionsEl.classList.add('hidden');
+                const icon = buttonEl.querySelector('i[data-lucide="chevron-down"]');
+                if (icon) {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            };
+            
+            // Adiciona evento de clique no botão para abrir/fechar
+            buttonEl.addEventListener('click', function(e) {
                 e.stopPropagation();
-                optionsEl.classList.toggle('hidden');
+                
+                // Esconde outros dropdowns abertos
+                document.querySelectorAll('[id$="-filter-options"]').forEach(el => {
+                    if (el !== optionsEl) {
+                        el.classList.add('hidden');
+                    }
+                });
+                
+                // Alterna o dropdown atual
+                const isOpening = optionsEl.classList.toggle('hidden');
+                const icon = buttonEl.querySelector('i[data-lucide="chevron-down"]');
+                if (icon) {
+                    icon.style.transform = isOpening ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
             });
-            optionsEl.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A') {
+            
+            // Adiciona evento de clique nas opções do dropdown
+            const options = optionsEl.querySelectorAll('a');
+            options.forEach(option => {
+                option.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const filterValue = e.target.dataset.filter;
-                    const filterText = e.target.textContent;
+                    e.stopPropagation();
+                    
+                    const filterValue = this.dataset.filter;
+                    const span = this.querySelector('span');
+                    const filterText = span ? span.textContent.trim() : this.textContent.trim();
+                    
+                    // Atualiza a seleção
                     onSelect(filterValue, filterText);
-                    optionsEl.classList.add('hidden');
+                    
+                    // Fecha o dropdown
+                    closeDropdown();
+                    
+                    // Força o fechamento imediato
+                    return false;
+                });
+            });
+            
+            // Fecha o dropdown ao clicar fora
+            document.addEventListener('click', function closeOnClickOutside(e) {
+                if (!buttonEl.contains(e.target) && !optionsEl.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+            
+            // Fecha ao pressionar ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && !optionsEl.classList.contains('hidden')) {
+                    closeDropdown();
                 }
             });
         }
 
-        document.addEventListener('click', () => {
-            paymentStatusFilterOptions.classList.add('hidden');
-            userStatusFilterOptions.classList.add('hidden');
-        });
+        // O fechamento dos dropdowns agora é gerenciado pela função setupDropdown
 
 
         // --- EVENT LISTENERS ---
@@ -596,18 +748,7 @@
         });
 
         // --- INICIALIZAÇÃO ---
-        setupDropdown(paymentStatusFilterBtn, paymentStatusFilterOptions, (value, text) => {
-            paymentStatusFilter = value;
-            paymentStatusFilterText.textContent = text;
-            renderStudentList();
-        });
-
-        setupDropdown(userStatusFilterBtn, userStatusFilterOptions, (value, text) => {
-            userStatusFilter = value;
-            userStatusFilterText.textContent = text;
-            renderStudentList();
-        });
-
+        // Os dropdowns já foram inicializados acima
         renderStudentList();
         lucide.createIcons();
     });

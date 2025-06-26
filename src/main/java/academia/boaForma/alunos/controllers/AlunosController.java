@@ -50,6 +50,12 @@ public class AlunosController {
         return ResponseEntity.ok(listagemAlunosAtivivos).getBody();
     }
 
+    @GetMapping("/naoAtivos")
+    public Page<DadosListarAlunos> listarAlunosNaoAtivos(Pageable paginacao) {
+        var listagemAlunosNaoAtivivos = alunosRepositorie.findAllNaoAcessoSistema(paginacao).map(DadosListarAlunos::new);
+        return ResponseEntity.ok(listagemAlunosNaoAtivivos).getBody();
+    }
+
     @GetMapping("/all")
     public Page<DadosListarAlunos> listarTodosAlunos(Pageable paginacao) {
         var listagemTodosAlunos = alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
