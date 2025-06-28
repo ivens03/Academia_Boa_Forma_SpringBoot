@@ -1,10 +1,36 @@
 /* src/main/resources/static/js/registroAluno.js */
 
+// As funções do modal precisam ser acessíveis globalmente ou no mesmo escopo das funções que as chamam.
+// Colocamos a lógica do modal e a função fetchAddress juntas para garantir o acesso.
+
+// Função para exibir o modal de feedback
+function showModal(title, message, type = 'success') {
+    const modal = document.getElementById('feedback-modal');
+    const icons = {
+        success: `<i data-lucide="check-circle" class="w-10 h-10 text-green-500"></i>`,
+        error: `<i data-lucide="x-circle" class="w-10 h-10 text-red-500"></i>`,
+        warning: `<i data-lucide="alert-triangle" class="w-10 h-10 text-yellow-500"></i>`
+    };
+    const colors = {
+        success: 'bg-green-100',
+        error: 'bg-red-100',
+        warning: 'bg-yellow-100'
+    };
+
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-message').innerText = message;
+    const iconContainer = document.getElementById('modal-icon');
+    iconContainer.innerHTML = icons[type];
+    iconContainer.className = `mx-auto flex items-center justify-center h-12 w-12 rounded-full ${colors[type]}`;
+    lucide.createIcons();
+    modal.style.display = 'block';
+}
+
+
 // Função para buscar endereço via CEP (usando a API ViaCEP)
-// Deixamos esta função no escopo global para que o Alpine.js possa chamá-la.
 function fetchAddress() {
     const cepInput = document.getElementById('cep');
-    const cep = cepInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    const cep = cepInput.value.replace(/\D/g, '');
     if (cep.length !== 8) return;
 
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -16,10 +42,13 @@ function fetchAddress() {
             } else {
                 document.getElementById('logradouro').value = '';
                 document.getElementById('bairro').value = '';
-                alert('CEP não encontrado.');
+                showModal('Erro', 'CEP não encontrado.', 'error');
             }
         })
-        .catch(error => console.error('Erro ao buscar CEP:', error));
+        .catch(error => {
+            console.error('Erro ao buscar CEP:', error);
+            showModal('Erro de Rede', 'Não foi possível buscar o CEP. Verifique sua conexão.', 'error');
+        });
 }
 
 
@@ -28,6 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
     }
+
+    // Lógica para fechar o modal
+    const modal = document.getElementById('feedback-modal');
+    const modalCloseBtn = document.getElementById('modal-close');
+    modalCloseBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+    window.addEventListener('click', (event) => {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
 
     // Carrega os professores ativos
     async function carregarProfessores() {
@@ -133,9 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMask(document.getElementById('cep'), cepMask);
 
     // Lógica de submissão do formulário
-    const form = document.querySelector('form');
+    const form = document.getElementById('student-form');
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            showModal('Atenção', 'Por favor, preencha todos os campos obrigatórios.', 'warning');
+            return;
+        }
 
         const unmask = (value) => value.replace(/\D/g, '');
 
@@ -148,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dataNascimento: document.getElementById('birth_date').value,
             idade: parseInt(document.getElementById('age').value),
             genero: document.getElementById('gender').value,
-            possuiDoenca: document.querySelector('input[x-model=\"hasDisease\"]:checked')?.value === 'true',
+            possuiDoenca: document.querySelector('input[x-model="hasDisease"]:checked')?.value === 'true',
             descricaoDoenca: document.getElementById('disease_description')?.value || null,
             objetivo: document.getElementById('student_focus').value,
             professorResponsavelId: document.getElementById('responsible_teacher').value,
@@ -167,15 +215,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                alert('Aluno cadastrado com sucesso!');
-                window.location.href = '/homeGestor'; // ou outra página de sucesso
+                showModal('Sucesso!', 'Aluno cadastrado com sucesso!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/homeGestor';
+                }, 2000);
             } else {
                 const errorData = await response.json();
-                alert(`Erro: ${errorData.message || 'Não foi possível cadastrar o aluno.'}`);
+                showModal('Erro', errorData.message || 'Não foi possível cadastrar o aluno.', 'error');
             }
         } catch (error) {
             console.error('Erro na submissão:', error);
-            alert('Ocorreu um erro de rede. Tente novamente.');
+            showModal('Erro de Rede', 'Ocorreu um erro de rede. Tente novamente.', 'error');
         }
     });
 });

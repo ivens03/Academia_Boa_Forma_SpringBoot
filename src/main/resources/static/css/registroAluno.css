@@ -16,3 +16,14 @@ select {
     appearance: none;
     padding-right: 2.5rem;
 }
+
+/* Estilo para feedback de validação */
+.error-message {
+    color: #ef4444; /* red-500 */
+    font-size: 0.875rem; /* text-sm */
+    margin-top: 0.25rem;
+}
+
+input:invalid, select:invalid {
+    border-color: #ef4444;
+}
