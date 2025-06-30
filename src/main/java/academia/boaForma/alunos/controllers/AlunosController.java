@@ -1,14 +1,16 @@
 package academia.boaForma.alunos.controllers;
 
-import academia.boaForma.alunos.dtos.DadosAtualizar;
-import academia.boaForma.alunos.dtos.DadosCadastroAluno;
-import academia.boaForma.alunos.dtos.DadosDetalhamentoAlunos;
-import academia.boaForma.alunos.dtos.DadosListarAlunos;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosAtualizar;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosCadastroAluno;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosDetalhamentoAlunos;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
+import academia.boaForma.alunos.services.AlunosService;
 import academia.boaForma.professor.repositories.ProfessorRepositorie;
 import academia.boaForma.usuarios.models.Genero;
+import academia.boaForma.usuarios.services.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -27,10 +29,12 @@ public class AlunosController {
 
     private final AlunosRepositorie alunosRepositorie;
     private final ProfessorRepositorie professorRepositorie;
+    private final UsuarioService usuarioService;
 
-    public AlunosController(AlunosRepositorie alunosRepositorie, ProfessorRepositorie professorRepositorie) {
+    public AlunosController(AlunosRepositorie alunosRepositorie, ProfessorRepositorie professorRepositorie, UsuarioService usuarioService) {
         this.alunosRepositorie = alunosRepositorie;
         this.professorRepositorie = professorRepositorie;
+        this.usuarioService = usuarioService;
     }
 
     @Transactional
@@ -39,9 +43,9 @@ public class AlunosController {
         var professor = professorRepositorie.professorById(dadosCadastroAluno.professorResponsavelId());
         var aluno = new AlunosModel(dadosCadastroAluno);
         aluno.setProfessorResponsavelId(professor);
-        alunosRepositorie.save(aluno);
-        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(aluno.getId()).toUri();
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos(aluno));
+        var alunoSalvo = usuarioService.cadastrar(aluno);
+        var uri = uriBuilder.path("/alunos/{id}").buildAndExpand(alunoSalvo.getId()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos((AlunosModel) alunoSalvo));
     }
 
     @GetMapping

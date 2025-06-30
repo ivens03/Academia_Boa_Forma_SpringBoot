@@ -1,7 +1,7 @@
 package academia.boaForma.alunos.models.informacoes;
 
-import academia.boaForma.alunos.dtos.DadosAtualizar;
-import academia.boaForma.alunos.dtos.DadosCadastroAluno;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosAtualizar;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosCadastroAluno;
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
 import academia.boaForma.professor.models.Professor;

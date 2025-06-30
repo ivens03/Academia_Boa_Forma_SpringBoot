@@ -37,6 +37,7 @@ public class Professor extends UsuarioModel {
     public Professor(DadosCadastroProfessor dadosCadastroProfessor) {
         this.id = dadosCadastroProfessor.id();
         this.nome = dadosCadastroProfessor.nome();
+        this.senha = dadosCadastroProfessor.senha();
         this.cpf = dadosCadastroProfessor.cpf();
         this.genero = dadosCadastroProfessor.genero();
         this.email = dadosCadastroProfessor.email();

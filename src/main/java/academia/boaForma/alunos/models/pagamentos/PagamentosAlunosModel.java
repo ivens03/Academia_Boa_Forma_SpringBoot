@@ -1,9 +1,8 @@
 package academia.boaForma.alunos.models.pagamentos;
 
-import academia.boaForma.alunos.dtos.DadosPagamentosAlunos;
+import academia.boaForma.alunos.dtos.pagamentosDtos.DadosCadastroPagamento;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -50,26 +49,15 @@ public class PagamentosAlunosModel implements Serializable {
 
     public PagamentosAlunosModel() {}
 
-
-    public PagamentosAlunosModel(Integer id_Pagamento, LocalDate data_de_pagamento, LocalDate data_pagamento_efetuado, LocalDate validade_pagamento, TipoPagamentoEnum tipoPagamento, StatusPagamentoEnum statusPagamento, BigDecimal valor_pago, StatusRecebidos statusRecebidos, AlunosModel aluno) {
-        this.id_Pagamento = id_Pagamento;
-        this.data_de_pagamento = data_de_pagamento;
-        this.data_pagamento_efetuado = data_pagamento_efetuado;
-        this.validade_pagamento = validade_pagamento;
-        this.tipoPagamento = tipoPagamento;
-        this.statusPagamento = statusPagamento;
-        this.valor_pago = valor_pago;
-        this.statusRecebidos = statusRecebidos;
-        this.aluno = aluno;
-    }
-
-    public PagamentosAlunosModel(@Valid DadosPagamentosAlunos dadosPagamentosAlunos) {
-        if (dadosPagamentosAlunos.data_pagamento_efetuado() != null) { this.data_pagamento_efetuado = dadosPagamentosAlunos.data_pagamento_efetuado(); }
-        if (dadosPagamentosAlunos.validade_pagamento() != null) { this.validade_pagamento = dadosPagamentosAlunos.validade_pagamento(); }
-        if (dadosPagamentosAlunos.tipoPagamento() != null) { this.tipoPagamento = dadosPagamentosAlunos.tipoPagamento(); }
-        if (dadosPagamentosAlunos.statusPagamento() != null) { this.statusPagamento = dadosPagamentosAlunos.statusPagamento(); }
-        if (dadosPagamentosAlunos.valor_pago() != null) { this.valor_pago = dadosPagamentosAlunos.valor_pago(); }
-        if (dadosPagamentosAlunos.statusRecebidos() != null) { this.statusRecebidos = dadosPagamentosAlunos.statusRecebidos(); }
+    public PagamentosAlunosModel(DadosCadastroPagamento dadosCadastroPagamento) {
+        this.id_Pagamento = dadosCadastroPagamento.id_pagamento();
+        this.data_de_pagamento = dadosCadastroPagamento.dataPagamento();
+        this.data_pagamento_efetuado = dadosCadastroPagamento.data_pagamento_efetuado();
+        this.validade_pagamento = dadosCadastroPagamento.validade_pagamento();
+        this.tipoPagamento = dadosCadastroPagamento.tipoPagamento();
+        this.statusPagamento = dadosCadastroPagamento.statusPagamento();
+        this.valor_pago = dadosCadastroPagamento.valor_pago();
+        this.statusRecebidos = dadosCadastroPagamento.statusRecebidos();
     }
 
     //GETTERS E SETTERS

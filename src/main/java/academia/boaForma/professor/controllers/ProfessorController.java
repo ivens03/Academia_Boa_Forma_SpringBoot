@@ -6,6 +6,7 @@ import academia.boaForma.professor.dtos.DadosDetalhamentoProfessor;
 import academia.boaForma.professor.dtos.DadosListarProfessores;
 import academia.boaForma.professor.models.Professor;
 import academia.boaForma.professor.repositories.ProfessorRepositorie;
+import academia.boaForma.usuarios.services.UsuarioService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -22,8 +23,12 @@ import java.util.stream.Collectors;
 public class ProfessorController {
 
     private final ProfessorRepositorie professorRepositorie;
+    private final UsuarioService usuarioService;
 
-    public ProfessorController(ProfessorRepositorie professorRepositorie) { this.professorRepositorie = professorRepositorie; }
+    public ProfessorController(ProfessorRepositorie professorRepositorie,UsuarioService usuarioService) {
+        this.professorRepositorie = professorRepositorie;
+        this.usuarioService = usuarioService;
+    }
 
     @GetMapping("/ativos")
     public ResponseEntity<List<DadosListarProfessores>> listarProfessoresAtivos() {
@@ -44,10 +49,10 @@ public class ProfessorController {
     @PostMapping
     public ResponseEntity<DadosDetalhamentoProfessor> cadastroProfessor(@RequestBody @Valid DadosCadastroProfessor dadosCadastroProfessor, UriComponentsBuilder uriBuilder) {
         var professor = new Professor(dadosCadastroProfessor);
-        professorRepositorie.save(professor);
-        var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professor.getId()).toUri();
+        var professorSalvo = usuarioService.cadastrar(professor);
+        var uri = uriBuilder.path("/professor/{id}").buildAndExpand(professorSalvo.getId()).toUri();
         System.out.println(dadosCadastroProfessor);
-        return ResponseEntity.created(uri).body(new DadosDetalhamentoProfessor(professor));
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoProfessor((Professor) professorSalvo));
     }
 
     @GetMapping

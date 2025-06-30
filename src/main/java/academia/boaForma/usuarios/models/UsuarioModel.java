@@ -1,14 +1,20 @@
 package academia.boaForma.usuarios.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "usuarios")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_usuario")
-public class UsuarioModel implements Serializable {
+public class UsuarioModel implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -52,13 +58,18 @@ public class UsuarioModel implements Serializable {
     @Column
     protected Boolean acessoSistema;
 
+    @Column(name = "tipo_usuario", insertable = false, updatable = false)
+    protected String tipoUsuario;
+
     public UsuarioModel() { }
 
     //Registrar a data quando foi criado
     @PrePersist
     public void registrarDataCriacao() {
         this.criadoEm = LocalDate.now();
+/*
         this.senha = "Boaforma2025";
+*/
         this.ativo = true;
         this.acessoSistema = true;
     }
@@ -77,6 +88,48 @@ public class UsuarioModel implements Serializable {
         this.genero = genero;
         this.statusValidacaoTelefone = statusValidacaoTelefone;
     }
+
+    // Rotas
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.tipoUsuario));
+    }
+
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    //Verificar Metados
+
+    @Override
+    public boolean isEnabled() {
+        return this.ativo;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.acessoSistema;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    //-------------------------------------------------
 
     // Getters e Setters
 

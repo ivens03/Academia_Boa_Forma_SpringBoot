@@ -1,14 +1,12 @@
-package academia.boaForma.alunos.dtos;
+package academia.boaForma.gestor.dtos;
 
 import academia.boaForma.alunos.models.endereco.Endereco;
-import academia.boaForma.alunos.models.informacoes.FocoAluno;
-
 import academia.boaForma.usuarios.models.Genero;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record DadosCadastroAluno(
+public record DadosCadastroGestor(
         Integer id,
         String nome,
         String cpf,
@@ -22,11 +20,5 @@ public record DadosCadastroAluno(
         Byte idade,
         LocalDate dataNascimento,
         String telefoneEmergencia,
-        Boolean possuiDoenca,
-        String descricaoDoenca,
-        FocoAluno focoAluno,
-        Endereco endereco,
-        LocalDateTime ultimoAcesso,
-        Integer professorResponsavelId
-    ) {
-}
+        Endereco endereco
+) { }

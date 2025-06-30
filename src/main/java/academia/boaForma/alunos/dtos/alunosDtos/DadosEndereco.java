@@ -1,4 +1,4 @@
-package academia.boaForma.alunos.dtos;
+package academia.boaForma.alunos.dtos.alunosDtos;
 
 public record DadosEndereco(
     String logradouro,

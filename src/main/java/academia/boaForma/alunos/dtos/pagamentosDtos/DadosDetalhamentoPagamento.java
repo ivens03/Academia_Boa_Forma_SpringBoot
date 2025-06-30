@@ -1,4 +1,4 @@
-package academia.boaForma.alunos.dtos;
+package academia.boaForma.alunos.dtos.pagamentosDtos;
 
 import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
 import academia.boaForma.alunos.models.pagamentos.StatusPagamentoEnum;
@@ -8,25 +8,24 @@ import academia.boaForma.alunos.models.pagamentos.TipoPagamentoEnum;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record DadosDetalhamentoPagamentosAlunos(
-        LocalDate data_de_pagamento,
+public record DadosDetalhamentoPagamento(
+        LocalDate dataPagamento,
         LocalDate data_pagamento_efetuado,
         LocalDate validade_pagamento,
         TipoPagamentoEnum tipoPagamento,
         StatusPagamentoEnum statusPagamento,
         BigDecimal valor_pago,
         StatusRecebidos statusRecebidos
-) {
-
-    public DadosDetalhamentoPagamentosAlunos(PagamentosAlunosModel pagamentosAlunos) {
+    ) {
+    public DadosDetalhamentoPagamento(PagamentosAlunosModel pagamento) {
         this(
-                pagamentosAlunos.getData_de_pagamento(),
-                pagamentosAlunos.getData_pagamento_efetuado(),
-                pagamentosAlunos.getValidade_pagamento(),
-                pagamentosAlunos.getTipoPagamento(),
-                pagamentosAlunos.getStatusPagamento(),
-                pagamentosAlunos.getValor_pago(),
-                pagamentosAlunos.getStatusRecebidos()
+            pagamento.getData_de_pagamento(),
+            pagamento.getData_pagamento_efetuado(),
+            pagamento.getValidade_pagamento(),
+            pagamento.getTipoPagamento(),
+            pagamento.getStatusPagamento(),
+            pagamento.getValor_pago(),
+            pagamento.getStatusRecebidos()
         );
     }
 }

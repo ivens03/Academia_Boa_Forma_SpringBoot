@@ -1,7 +1,7 @@
 package academia.boaForma.gestor.controllers;
 
 import academia.boaForma.alunos.controllers.AlunosController;
-import academia.boaForma.alunos.dtos.DadosListarAlunos;
+import academia.boaForma.alunos.dtos.alunosDtos.DadosListarAlunos;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -43,5 +43,15 @@ public class GestorPrincipal {
     @GetMapping("/login")
     public String telaLogin() {
         return "login";
+    }
+
+    @GetMapping("/homeAluno")
+    public String telaPrincipalAluno() {
+        return "alunoHome";
+    }
+
+    @GetMapping("/homeProfessor")
+    public String telaPrincipalProfessor() {
+        return "professorHome";
     }
 }

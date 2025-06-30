@@ -1,4 +1,4 @@
-package academia.boaForma.alunos.dtos;
+package academia.boaForma.alunos.dtos.alunosDtos;
 
 import academia.boaForma.alunos.models.endereco.Endereco;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
