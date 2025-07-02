@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/alunos", "/gestor", "/professor").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

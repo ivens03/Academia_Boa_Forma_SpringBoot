@@ -7,10 +7,13 @@ import academia.boaForma.alunos.dtos.alunosDtos.DadosListarAlunos;
 import academia.boaForma.alunos.models.informacoes.AlunosModel;
 import academia.boaForma.alunos.models.informacoes.FocoAluno;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
-import academia.boaForma.alunos.services.AlunosService;
 import academia.boaForma.professor.repositories.ProfessorRepositorie;
 import academia.boaForma.usuarios.models.Genero;
 import academia.boaForma.usuarios.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/alunos")
+@Tag(name = "Alunos", description = "Controller Responsavel Pelo Alunos")
 public class AlunosController {
 
     private final AlunosRepositorie alunosRepositorie;
@@ -37,6 +41,11 @@ public class AlunosController {
         this.usuarioService = usuarioService;
     }
 
+    @Operation(summary = "Cadastrar alunos",description = "Metado para fazer o cadastro de um aluno dentro do sistema da academia", method = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao salvar"),
+            @ApiResponse(responseCode = "422", description = "Dados para que possa ser salvo são inválidos")
+    })
     @Transactional
     @PostMapping
     public ResponseEntity<DadosDetalhamentoAlunos> cadastroAluno(@RequestBody @Valid DadosCadastroAluno dadosCadastroAluno, UriComponentsBuilder uriBuilder) {
