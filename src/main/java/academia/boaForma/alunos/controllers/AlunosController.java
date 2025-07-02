@@ -44,7 +44,8 @@ public class AlunosController {
     @Operation(summary = "Cadastrar alunos",description = "Metado para fazer o cadastro de um aluno dentro do sistema da academia", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Erro ao salvar"),
-            @ApiResponse(responseCode = "422", description = "Dados para que possa ser salvo são inválidos")
+            @ApiResponse(responseCode = "422", description = "Dados para que possa ser salvo são inválidos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
     })
     @Transactional
     @PostMapping
@@ -57,24 +58,45 @@ public class AlunosController {
         return ResponseEntity.created(uri).body(new DadosDetalhamentoAlunos((AlunosModel) alunoSalvo));
     }
 
+    @Operation(summary = "Listar alunos",description = "Metado para listar alunos com acesso ao sistema", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @GetMapping
     public Page<DadosListarAlunos> listarAlunos(Pageable paginacao) {
         var listagemAlunosAtivivos = alunosRepositorie.findAllAcessoSistema(paginacao).map(DadosListarAlunos::new);
         return ResponseEntity.ok(listagemAlunosAtivivos).getBody();
     }
 
+    @Operation(summary = "Listar alunos",description = "Metado para listar alunos sem acesso ao sistema", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @GetMapping("/naoAtivos")
     public Page<DadosListarAlunos> listarAlunosNaoAtivos(Pageable paginacao) {
         var listagemAlunosNaoAtivivos = alunosRepositorie.findAllNaoAcessoSistema(paginacao).map(DadosListarAlunos::new);
         return ResponseEntity.ok(listagemAlunosNaoAtivivos).getBody();
     }
 
+    @Operation(summary = "Listar todos alunos",description = "Metado para listar todos alunos", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @GetMapping("/all")
     public Page<DadosListarAlunos> listarTodosAlunos(Pageable paginacao) {
         var listagemTodosAlunos = alunosRepositorie.findAll(paginacao).map(DadosListarAlunos::new);
         return ResponseEntity.ok(listagemTodosAlunos).getBody();
     }
 
+    @Operation(summary = "Atualizar alunos",description = "Metado para atualizar alunos", method = "PUT")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor"),
+            @ApiResponse(responseCode = "409", description = "ja cadastrado")
+    })
     @Transactional
     @PutMapping
     public ResponseEntity<DadosDetalhamentoAlunos> atualizarAluno(@RequestBody @Valid DadosAtualizar dadosAtualizar) {
@@ -85,6 +107,11 @@ public class AlunosController {
         return ResponseEntity.ok(new DadosDetalhamentoAlunos(aluno));
     }
 
+    @Operation(summary = "Delete logico dos alunos",description = "Metado para desativar um aluno, sem deletar do banco de dados", method = "DELETE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @Transactional
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarAlunos(@PathVariable Integer id) {
@@ -94,6 +121,11 @@ public class AlunosController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Listar generos",description = "Metado para listar generos disponivel no ENUM", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @GetMapping("/generos")
     public ResponseEntity<List<String>> listarGeneros() {
         return ResponseEntity.ok(Arrays.stream(Genero.values())
@@ -101,6 +133,11 @@ public class AlunosController {
                 .collect(Collectors.toList()));
     }
 
+    @Operation(summary = "Listar generos",description = "Metado para listar objetivos do aluno no ENUM", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Erro ao buscar alunos"),
+            @ApiResponse(responseCode = "404", description = "Erro no servidor")
+    })
     @GetMapping("/focoAluno")
     public ResponseEntity<List<String>> listarFocoAluno() {
         return ResponseEntity.ok(Arrays.stream(FocoAluno.values())
