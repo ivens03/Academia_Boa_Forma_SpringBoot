@@ -15,16 +15,6 @@ public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
     @Query("SELECT a FROM AlunosModel a")
     List<AlunosModel> findAll();
 
-    boolean existsByNome(String nome);
-
-    boolean existsByCpf(String cpf);
-
-    boolean existsByEmail(String email);
-
-    boolean existsByTelefone(String telefone);
-
-    boolean existsByTelefoneEmergencia(String telefoneEmergencia);
-
     @Query("SELECT a FROM AlunosModel a WHERE a.acessoSistema = true")
     Page<AlunosModel> findAllAcessoSistema(Pageable paginacao);
 

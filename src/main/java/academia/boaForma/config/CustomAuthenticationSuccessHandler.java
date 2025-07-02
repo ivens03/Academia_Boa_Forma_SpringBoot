@@ -9,34 +9,45 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collection;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    // ✅ Este é o método principal que o Spring executa.
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        // 1. Chamar o método auxiliar para descobrir a URL de destino.
+        String redirectUrl = determineTargetUrl(authentication);
 
-        String redirectUrl = null;
+        // 2. Se uma URL foi encontrada, realizar o redirecionamento.
+        if (redirectUrl != null) {
+            response.sendRedirect(request.getContextPath() + redirectUrl);
+        } else {
+            // Opcional: Lançar um erro se nenhuma permissão válida for encontrada.
+            throw new IllegalStateException("Não foi possível determinar a URL de redirecionamento para o usuário.");
+        }
+    }
 
-        label:
+    // ✅ Este é o método auxiliar, agora no lugar correto (fora do outro método).
+    protected String determineTargetUrl(Authentication authentication) {
+        // O laço for é essencial para verificar CADA permissão na lista.
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String role = authority.getAuthority();
-            switch (role) {
-                case "ROLE_ALUNO":
-                    redirectUrl = "/alunoHome";
-                    break label; // Encontrou a role, pode parar o loop
-                case "ROLE_PROFESSOR":
-                    redirectUrl = "/professorHome";
-                    break label;
-                case "ROLE_GESTOR":
-                    redirectUrl = "/homeGestor";
-                    break label;
+
+            // Usamos o if para checar a permissão da rodada atual.
+            if ("ROLE_GESTOR".equals(role)) {
+                return "/homeGestor"; // Ponto e vírgula adicionado.
+            }
+            if ("ROLE_ALUNO".equals(role)) {
+                return "/alunoHome"; // Ponto e vírgula adicionado.
+            }
+            if ("ROLE_PROFESSOR".equals(role)) {
+                return "/professorHome"; // Ponto e vírgula adicionado.
             }
         }
 
-        if (redirectUrl == null) {
-            throw new IllegalStateException("Nenhuma role encontrada para o usuário ou nenhuma regra de redirecionamento definida.");
-        }
-        response.sendRedirect(request.getContextPath() + redirectUrl);
+        // Se o laço terminar e nenhuma permissão for encontrada, retorna nulo.
+        return null;
     }
 }
