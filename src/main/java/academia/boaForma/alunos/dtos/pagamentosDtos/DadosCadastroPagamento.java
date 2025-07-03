@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record DadosCadastroPagamento(
-     Integer id_pagamento,
+     Long id_aluno,
      LocalDate dataPagamento,
      LocalDate data_pagamento_efetuado,
      LocalDate validade_pagamento,

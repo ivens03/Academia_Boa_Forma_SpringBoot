@@ -27,16 +27,19 @@ public class PagamentosAlunosModel implements Serializable {
     @Column
     protected LocalDate validade_pagamento;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_pagamento")
     protected TipoPagamentoEnum tipoPagamento;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_pagamento")
     protected StatusPagamentoEnum statusPagamento;
 
     @Column
     protected BigDecimal valor_pago;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_recebidos")
     protected StatusRecebidos statusRecebidos;
 
     // Relacionamento com alunos
@@ -49,8 +52,7 @@ public class PagamentosAlunosModel implements Serializable {
 
     public PagamentosAlunosModel() {}
 
-    public PagamentosAlunosModel(DadosCadastroPagamento dadosCadastroPagamento) {
-        this.id_Pagamento = dadosCadastroPagamento.id_pagamento();
+    public PagamentosAlunosModel(DadosCadastroPagamento dadosCadastroPagamento, AlunosModel aluno) {
         this.data_de_pagamento = dadosCadastroPagamento.dataPagamento();
         this.data_pagamento_efetuado = dadosCadastroPagamento.data_pagamento_efetuado();
         this.validade_pagamento = dadosCadastroPagamento.validade_pagamento();
@@ -58,6 +60,7 @@ public class PagamentosAlunosModel implements Serializable {
         this.statusPagamento = dadosCadastroPagamento.statusPagamento();
         this.valor_pago = dadosCadastroPagamento.valor_pago();
         this.statusRecebidos = dadosCadastroPagamento.statusRecebidos();
+        this.aluno = aluno;
     }
 
     //GETTERS E SETTERS

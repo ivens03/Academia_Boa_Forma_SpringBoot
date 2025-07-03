@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AlunosRepositorie extends JpaRepository<AlunosModel, Integer> {
-    // Método para buscar todos os alunos sem paginação
+
     @Override
     @Query("SELECT a FROM AlunosModel a")
     List<AlunosModel> findAll();
