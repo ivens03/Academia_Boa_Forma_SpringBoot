@@ -24,7 +24,7 @@ public class PagamentosController {
     private final PagamentosAlunosRepositorie pagamentosAlunosRepositorie;
     private final AlunosRepositorie alunosRepositorie;
 
-    @Autowired
+    /*@Autowired*/
     public PagamentosController(PagamentosAlunosRepositorie pagamentosAlunosRepositorie, AlunosRepositorie alunosRepositorie) {
         this.pagamentosAlunosRepositorie = pagamentosAlunosRepositorie;
         this.alunosRepositorie = alunosRepositorie;
