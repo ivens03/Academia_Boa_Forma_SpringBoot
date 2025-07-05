@@ -3,9 +3,7 @@ package academia.boaForma.alunos.controllers;
 import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
 import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import academia.boaForma.alunos.repositories.PagamentosAlunosRepositorie;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping("/recibo")
@@ -51,20 +51,41 @@ public class ReciboPagamentos {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             Document document = new Document();
             PdfWriter.getInstance(document, baos);
-
-            // Adiciona conteúdo ao PDF
             document.open();
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            String imagePath = "static/images/logoAcademiaBoaForma(1).png";
+
+            try (InputStream is = classLoader.getResourceAsStream(imagePath)) {
+                if (is == null) {
+                    throw new FileNotFoundException("Imagem não encontrada: " + imagePath);
+                }
+
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                int nRead;
+                byte[] data = new byte[1024];
+                while ((nRead = is.read(data, 0, data.length)) != -1) {
+                    buffer.write(data, 0, nRead);
+                }
+                buffer.flush();
+
+                // Criar a imagem
+                Image logo = Image.getInstance(buffer.toByteArray());
+                logo.scaleToFit(100, 100);
+                logo.setAlignment(Element.ALIGN_CENTER);
+                document.add(logo);
+            }
+
             document.add(new Paragraph("Recibo de Pagamento boa forma"));
             document.add(new Paragraph("Valor: R$ " + pagamentosAlunosModel.getValor_pago()));
-            document.add(new Paragraph("Forma de pagamento" + pagamentosAlunosModel.getTipoPagamento()));
+            document.add(new Paragraph("Forma de pagamento: " + pagamentosAlunosModel.getTipoPagamento()));
             document.add(new Paragraph("Data de pagamento efetuado: " + pagamentosAlunosModel.getData_pagamento_efetuado()));
             document.add(new Paragraph("Pagamento feito pelo aluno: " + pagamentosAlunosModel.getAluno().getNome()));
-            // Adicione mais campos conforme necessário
 
             document.close();
             return baos.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao gerar PDF", e);
+            throw new RuntimeException("Erro ao gerar PDF: " + e.getMessage(), e);
         }
     }
 }
