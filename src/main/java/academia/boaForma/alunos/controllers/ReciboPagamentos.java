@@ -1,9 +1,11 @@
 package academia.boaForma.alunos.controllers;
 
 import academia.boaForma.alunos.models.pagamentos.PagamentosAlunosModel;
-import academia.boaForma.alunos.repositories.AlunosRepositorie;
 import academia.boaForma.alunos.repositories.PagamentosAlunosRepositorie;
-import com.itextpdf.text.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -70,6 +73,7 @@ public class ReciboPagamentos {
                 buffer.flush();
 
                 // Criar a imagem
+                // O valor 100 é em Pixel não em porcentagem, fazer a adquação conforme necessário
                 Image logo = Image.getInstance(buffer.toByteArray());
                 logo.scaleToFit(100, 100);
                 logo.setAlignment(Element.ALIGN_CENTER);

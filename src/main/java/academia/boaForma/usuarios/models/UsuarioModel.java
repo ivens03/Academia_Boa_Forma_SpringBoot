@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -67,9 +68,6 @@ public class UsuarioModel implements Serializable, UserDetails {
     @PrePersist
     public void registrarDataCriacao() {
         this.criadoEm = LocalDate.now();
-/*
-        this.senha = "Boaforma2025";
-*/
         this.ativo = true;
         this.acessoSistema = true;
     }

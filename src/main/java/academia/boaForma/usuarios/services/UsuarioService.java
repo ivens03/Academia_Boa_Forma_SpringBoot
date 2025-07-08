@@ -9,10 +9,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço responsável por gerenciar operações relacionadas a usuários
+ */
+
 @Service
 public class UsuarioService {
-
-    private UsuarioRepository usuarioRepository;
+    
+    // Senha padrão para novos usuários
+    private static final String SENHA_PADRAO = "BoaForma2025";
+    
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
@@ -20,10 +27,14 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     public UsuarioModel cadastrar(UsuarioModel usuario) {
-        String senhaPura = usuario.getSenha();
-        String senhaCriptografada = passwordEncoder.encode(senhaPura);
+
+        // Define a senha padrão e criptografa
+        String senhaCriptografada = passwordEncoder.encode(SENHA_PADRAO);
         usuario.setSenha(senhaCriptografada);
+        
+        // Valida campos únicos
         List<String> camposDuplicados = new ArrayList<>();
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             camposDuplicados.add("email");
