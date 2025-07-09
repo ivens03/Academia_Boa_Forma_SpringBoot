@@ -2,15 +2,12 @@ package academia.boaForma.professor.models;
 
 import academia.boaForma.professor.dtos.DadosAtualizarProfessor;
 import academia.boaForma.professor.dtos.DadosCadastroProfessor;
-import academia.boaForma.usuarios.models.Genero;
 import academia.boaForma.usuarios.models.UsuarioModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "professores")
