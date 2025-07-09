@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Serviço responsável por gerenciar operações relacionadas a usuários
+ * Serviço responsável pela criptografia da senha.
+ * Definição de senha padrão.
  */
 
 @Service
